@@ -1,20 +1,18 @@
 import components.FileHandling;
+import components.GraphOperations;
 import services.Graph;
-import services.LinkedList2D;
 import services.Stack;
-
-import java.io.FileNotFoundException;
 
 public class Main {
 
     public static void main(String[] args) {
 
         FileHandling file_handling = new FileHandling();
-        char[][] puzzle= file_handling.readFile("assets/maze10_1.txt");
+        char[][] puzzle= file_handling.readFile("assets/benchmark/benchmark_series/puzzle_80.txt");
 
-        Graph graph = new Graph();
-        LinkedList2D root = graph.createGraph(puzzle);
+        GraphOperations graphOperations = new GraphOperations();
+        Graph root = graphOperations.createGraph(puzzle);
         Stack stack = new Stack(puzzle.length * puzzle[0].length);
-        graph.printRecursive(root, stack);
+        graphOperations.printRecursive(root, stack);
     }
 }

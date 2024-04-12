@@ -1,13 +1,13 @@
 package services;
 
 public class Stack {
-    private final LinkedList2D[] stack;
+    private final Graph[] stack;
     private int top;
     private final int maxSize;
 
     public Stack(int maxSize) {
         this.maxSize = maxSize;
-        this.stack = new LinkedList2D[maxSize];
+        this.stack = new Graph[maxSize];
         this.top = -1; // Initialize top pointer to -1 to indicate an empty stack
     }
 
@@ -19,7 +19,7 @@ public class Stack {
         return top == maxSize - 1;
     }
 
-    public void push(LinkedList2D item) {
+    public void push(Graph item) {
         if (isFull()) {
             System.out.println("Stack overflow!");
             return;
@@ -28,17 +28,17 @@ public class Stack {
         stack[top] = item;
     }
 
-    public LinkedList2D pop() {
+    public Graph pop() {
         if (isEmpty()) {
             System.out.println("Stack underflow!");
             return null;
         }
-        LinkedList2D poppedItem = stack[top];
+        Graph poppedItem = stack[top];
         top--;
         return poppedItem;
     }
 
-    public LinkedList2D peek() {
+    public Graph peek() {
         if (isEmpty()) {
             System.out.println("Stack is empty!");
             return null;
@@ -46,11 +46,11 @@ public class Stack {
         return stack[top];
     }
 
-    public boolean contains(LinkedList2D item) {
+    public boolean contains(Graph item) {
         if (isEmpty()) {
             System.out.println("Stack is empty!");
         }else {
-            for (LinkedList2D node : stack) {
+            for (Graph node : stack) {
                 if (node == null) break;
                 else if (node.equals(item)) {
                     return true;

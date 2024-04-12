@@ -1,11 +1,11 @@
 package services;
 
 public class Queue {
-    private final LinkedList2D[] queue;
+    private final Graph[] queue;
     private int front=-1, rear=-1, size=0;
 
     public Queue(int n) {
-        queue = new LinkedList2D[n];
+        queue = new Graph[n];
     }
 
     public boolean isEmpty() {
@@ -13,7 +13,7 @@ public class Queue {
     }
 
 
-    public void enqueue(LinkedList2D x) {
+    public void enqueue(Graph x) {
         if (size == queue.length) {
             throw new IllegalStateException("Queue is full");
         }
@@ -27,12 +27,12 @@ public class Queue {
         return size;
     }
 
-    public LinkedList2D dequeue() {
+    public Graph dequeue() {
         if (isEmpty()) {
             throw new IllegalStateException("Queue is empty");
         } else {
             front = (front + 1) % queue.length;
-            LinkedList2D dequeuedElement = queue[front];
+            Graph dequeuedElement = queue[front];
             queue[front] = null;
             size--;
             return dequeuedElement;
