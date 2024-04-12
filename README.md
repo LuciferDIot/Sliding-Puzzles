@@ -1,60 +1,41 @@
-﻿**University of Westminster**  Department of Computer Science 
-
-
-
-|**5SENG003W       Algorithms  – Coursework (2023/24)**||
-| - | :- |
-|Module leader |Ragu Sivaraman|
-|Unit |Coursework |
-|Weighting: |50% |
-|Qualifying mark |30% |
-|Description |Solving sliding puzzles using path finding |
-|Learning Outcomes Covered in this Assignment: |<p>This assignment contributes towards the following Learning Outcomes (LOs): </p><p>- LO2: Be able to apply the theory for the effective design and implementation of appropriate data structures and algorithms in order to resolve the problem at hand; ![ref1]</p><p>- LO3: Be able to analyse, predict, compare and contrast the performance of designed and implemented algorithms, particularly in the context of processing data;![ref1] </p><p>- LO4: Be able to use a range of typical data structures and collections as part of Application Programming Interfaces (APIs) offered by programming languages; ![ref1]</p><p>- LO5: Be able to apply the theory for the definition and implementation of novel algorithms.</p>|
-|Handed Out: |14th March 2024 |
-|Due Date |14:00, Monday, 24th April 2024 |
-|Expected deliverables |**A zip file containing the source code in Java or C++, a short report ( 3-10 pages pdf).** |
-|Method of Submission: |Electronic submission on Blackboard via a provided link close to the submission ![](Aspose.Words.66537b0d-21df-4fec-b33c-105f18f5f999.002.png)time. |
-|Type of Feedback and Due Date: |Written feedback within 15 working days.** |
-|BCS  CRITERIA  MEETING  IN THIS ASSIGNMENT |<p>**2.1.1 Knowledge and understanding of facts, concepts, principles ![](Aspose.Words.66537b0d-21df-4fec-b33c-105f18f5f999.003.png)**</p><p>**& theories** </p><p>**2.1.3 Problem solving strategies** </p><p>**2.1.5 Deploy theory in design, implementation and evaluation of ![](Aspose.Words.66537b0d-21df-4fec-b33c-105f18f5f999.004.png)systems** </p><p>**2.2.2 Evaluate systems in terms of quality and trade-offs** </p><p>**2.3.2 Development of general transferable skills** </p><p>**3.2.2 Defining problems, managing design process and evaluating ![](Aspose.Words.66537b0d-21df-4fec-b33c-105f18f5f999.005.png)outcomes** </p><p>4.1.1 **Knowledge and understanding of scientific principles** </p><p>4.1.2 **Knowledge and understanding of mathematical and statistical ![](Aspose.Words.66537b0d-21df-4fec-b33c-105f18f5f999.006.png)principles** </p><p>**4.2.1 Use theoretical and practical methods in analysis and problem ![](Aspose.Words.66537b0d-21df-4fec-b33c-105f18f5f999.007.png)solving** </p>|
-
-**Assessment regulations** 
-
-Refer to section 4 of the “How you study” guide for undergraduate students for a clarification of how you are assessed, penalties and late submissions, what constitutes plagiarism etc. 
-
-**Penalty for Late Submission** 
-
-If you submit your coursework late but within 24 hours or one working day of the specified deadline, 10 marks will be deducted from the final mark, as a penalty for late submission, except for work which obtains a mark in the range 40 – 49%, in which case the mark will be capped at the pass mark (40%). If you submit your coursework more than 24 hours or more than one working day after the specified deadline you will be given a mark of zero for the work in question unless a claim of Mitigating Circumstances has been submitted and accepted as valid.**  
-
-It is recognised that on occasion, illness or a personal crisis can mean that you fail to submit a piece of work on time. In such cases you must inform the Campus Office in writing on a mitigating circumstances form, giving the reason for your late or non-submission. You must provide relevant documentary evidence with the form. This information will be reported to the relevant Assessment Board that will decide whether the mark of zero shall stand. For more detailed information regarding University Assessment Regulations, please refer to the following website[:**http://www.westminster.ac.uk/study/current-students/resources/academic-regulations** ](http://www.westminster.ac.uk/study/current-students/resources/academic-regulations)
-
 **Coursework Description: Sliding puzzles** 
 
 In this coursework, you are supposed to use path finding to solve a type of puzzle that occurs in many video games. The basic version that we will be dealing with is this:  
 
-.....0...S ....0..... 0.....0..0 ...0....0. .F......0. .0........ .......0.. .0.0..0..0 0......... .00.....0. 
+.....0...S 
+....0..... 
+0.....0..0 
+...0....0. 
+.F......0. 
+.0........ 
+.......0.. 
+.0.0..0..0 
+0......... 
+.00.....0. 
 
 The player starts at the location labelled “S” and wants to reach the finish, labelled “F”. Each turn they choose one of the four cardinal directions to move. However, except for S and F the floor is covered in frictionless ice, so they will keep sliding in the chosen direction until they hit the wall surrounding the area, or one of the rocks (labelled “0”). For example, starting in the map given above: 
 
-.....0...@ ....0..... 0.....0..0 ...0....0. .F......0. .0........ .......0.. .0.0..0..0 0......... .00.....0. 
+.....0...@ 
+....0..... 
+0.....0..0 
+...0....0. 
+.F......0. 
+.0........ 
+.......0.. 
+.0.0..0..0 
+0......... 
+.00.....0. 
 
 the player (“@”) moving left would end up here: .....0@..S 
 
 ....0..... 
-
-0\.....0..0 
-
+0.....0..0 
 ...0....0. 
-
 .F......0. 
-
 .0........ 
-
 .......0.. 
-
 .0.0..0..0 
-
-0\......... 
-
+0......... 
 .00.....0. 
 
 So we are dealing with the problem of finding a path from S to F, but the reachability relation between points is not the usual one.  
