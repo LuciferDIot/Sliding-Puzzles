@@ -40,26 +40,30 @@ public class FileOperations {
 
                         if (prevVertex != null) graph.addEdge(newVertex, prevVertex, null);
 
-                        if (!prevRow.isEmpty()){
+                        if (!prevRow.isEmpty() && line.length() <= prevRow.size()){
                             Vertex headVertex = prevRow.peek();
-                            if ( headVertex == null){
-                                prevRow.dequeue();
+                            if (headVertex.isColumnHigher(newVertex)) {
+                                while (headVertex.isColumnHigher(newVertex)) {
+                                    if (prevRow.peek().getY()+1 != headVertex.getY()) break;
+                                    prevRow.dequeue();
+                                }
                             }
                             else if(headVertex.isSameColumn(newVertex)) {
                                 headVertex = prevRow.dequeue();
-                                graph.addEdge(headVertex, newVertex, null);
+                                if (headVertex.getLabel()!=null) graph.addEdge(headVertex, newVertex, null);
                             }
                         }
 
                         if (Objects.equals(newVertex.getLabel(), "S")) graph.setStart(newVertex);
                         if (Objects.equals(newVertex.getLabel(), "F")) graph.setEnd(newVertex);
+
                         prevRow.enqueue(newVertex);
                         prevVertex = newVertex;
                     }
                     else {
                         prevVertex = null;
                         if (!prevRow.isEmpty()) prevRow.dequeue();
-                        prevRow.enqueue(null);
+                        prevRow.enqueue(new Vertex(colId, rowId, null));
                     }
                 }
             }

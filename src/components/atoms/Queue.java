@@ -14,6 +14,10 @@ public class Queue<T> {
         return this.size == 0;
     }
 
+    public int size() {
+        return this.size;
+    }
+
     public void enqueue(T data) {
         this.queue.addToTail(data);
         this.size++;

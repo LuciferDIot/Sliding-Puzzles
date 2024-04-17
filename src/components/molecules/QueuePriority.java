@@ -59,6 +59,10 @@ public class QueuePriority {
         return null;
     }
 
+    public int getSize() {
+        return queue.size();
+    }
+
     public void print(){
         System.out.println("Size of queue: " + queue.size());
         for (QueueObject element : this.queue) {

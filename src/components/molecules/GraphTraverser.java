@@ -2,9 +2,6 @@ package components.molecules;
 
 import components.atoms.*;
 
-import java.util.ArrayList;
-import java.util.Stack;
-
 public class GraphTraverser {
 
 
@@ -40,7 +37,7 @@ public class GraphTraverser {
 
                 QueueObject visitedQueueObj = visitedVertices.contains(neighbor);
                 if (visitedQueueObj == null) {
-//                    neighbor.print(false);
+                    neighbor.print(false);
                     neighbor.setHeuristicCost(newLevel);
                     neighbor.setPrev(current);
                     visitedVertices.enqueue(neighbor, current, newLevel + heuristicCost);
