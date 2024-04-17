@@ -27,33 +27,44 @@ public class FileOperations {
             String line;
             int rowId = 0;
             while ((line = reader.readLine()) != null){
-                String[] nodeLabels = line.split("");
+                StringBuilder string = new StringBuilder(line.toUpperCase());
 
                 rowId++;
                 Vertex prevVertex = null;
-                for (int colId = 1; colId < nodeLabels.length+1; colId++){
-                    String label = nodeLabels[colId-1].toUpperCase();
+                for (int colId = 1; colId < line.length()+1; colId++){
+                    String label = String.valueOf(string.charAt(colId-1));
+//                    System.out.println(rowId +", "+ colId + ": "+label);
 
                     if (!label.equals("0")){
                         Vertex newVertex = graph.addVertex(colId, rowId, label);
-                        newVertex.print(false);
 
                         if (prevVertex != null) graph.addEdge(newVertex, prevVertex, null);
 
-                        if (!prevRow.isEmpty()){
+                        if (!prevRow.isEmpty() && line.length() <= prevRow.size()){
                             Vertex headVertex = prevRow.peek();
-                            if (headVertex.isSameColumn(newVertex)) {
+                            if (headVertex.isColumnHigher(newVertex)) {
+                                while (headVertex.isColumnHigher(newVertex)) {
+                                    if (prevRow.peek().getY()+1 != headVertex.getY()) break;
+                                    prevRow.dequeue();
+                                }
+                            }
+                            else if(headVertex.isSameColumn(newVertex)) {
                                 headVertex = prevRow.dequeue();
-                                graph.addEdge(headVertex, newVertex, null);
+                                if (headVertex.getLabel()!=null) graph.addEdge(headVertex, newVertex, null);
                             }
                         }
 
                         if (Objects.equals(newVertex.getLabel(), "S")) graph.setStart(newVertex);
                         if (Objects.equals(newVertex.getLabel(), "F")) graph.setEnd(newVertex);
+
                         prevRow.enqueue(newVertex);
                         prevVertex = newVertex;
                     }
-                    else prevVertex=null;
+                    else {
+                        prevVertex = null;
+                        if (!prevRow.isEmpty()) prevRow.dequeue();
+                        prevRow.enqueue(new Vertex(colId, rowId, null));
+                    }
                 }
             }
 

@@ -12,25 +12,45 @@ public class PathFinder {
 
     public static List<Vertex> findShortestPath(QueuePriority priorityObj, Vertex start, Vertex end) {
 
-        List<QueueObject> visited = new ArrayList<QueueObject>();
+        if (priorityObj.isEmpty()) return null;
 
         List<Vertex> path = new ArrayList<>();
+
         boolean found = false;
-        while (!found){
-            PriorityQueue<QueueObject> priority = QueuePriority.getCopy(priorityObj.getQueue());
-            QueueObject headObj = priority.poll();
-            visited.add(headObj);
+        while (!found && !priorityObj.isEmpty()){
+            QueueObject headObj = priorityObj.dequeue();
+            System.out.println("priority "+priorityObj.getSize());
 
-            if (headObj != null && !visited.contains(headObj) && headObj.getPrev().isSame(start)){
+            if (headObj.getVertex().isSame(start)) continue;
+
+            if (headObj.getPrev().isSame(start)){
+
+                PriorityQueue<QueueObject> priorityCopy = QueuePriority.getCopy(priorityObj.getQueue());
                 path.add(headObj.getPrev());
-                while (!priority.isEmpty()) {
-                    QueueObject currObj = priority.poll();
 
-                    if (currObj != null && currObj.getPrev().isSame(headObj.getVertex())) path.add(currObj.getVertex());
+                while (!priorityCopy.isEmpty()) {
+                    QueueObject currObj = priorityCopy.poll();
+                    System.out.println("priorityCopy "+priorityCopy.size());
+
+                    if (currObj != null && currObj.getPrev().isSame(headObj.getVertex())) {
+                        path.add(currObj.getVertex());
+
+                        System.out.println("Current path");
+                        currObj.print();
+
+                        end.print(false);
+                        if (currObj.getVertex().isSame(end)) {
+                            System.out.println("Found");
+                            found = true;
+                            break;
+                        }
+                        headObj = currObj;
+                    }
+
                 }
             }
 
-            path.clear();
+            if (!found) path.clear();;
         }
 
         return path;

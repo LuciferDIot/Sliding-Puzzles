@@ -97,4 +97,8 @@ public class Vertex {
     public boolean isSame(Vertex vertex) {
         return this.getX()==vertex.getX() && this.getY()==vertex.getY();
     }
+
+    public boolean isColumnHigher(Vertex newVertex) {
+        return this.getX()<newVertex.getX();
+    }
 }
