@@ -31,8 +31,9 @@ public class FileOperations {
 
                 rowId++;
                 Vertex prevVertex = null;
-                for (int colId = 1; colId < line.length(); colId++){
+                for (int colId = 1; colId < line.length()+1; colId++){
                     String label = String.valueOf(string.charAt(colId-1));
+//                    System.out.println(rowId +", "+ colId + ": "+label);
 
                     if (!label.equals("0")){
                         Vertex newVertex = graph.addVertex(colId, rowId, label);
@@ -41,7 +42,10 @@ public class FileOperations {
 
                         if (!prevRow.isEmpty()){
                             Vertex headVertex = prevRow.peek();
-                            if (headVertex.isSameColumn(newVertex)) {
+                            if ( headVertex == null){
+                                prevRow.dequeue();
+                            }
+                            else if(headVertex.isSameColumn(newVertex)) {
                                 headVertex = prevRow.dequeue();
                                 graph.addEdge(headVertex, newVertex, null);
                             }
@@ -55,6 +59,7 @@ public class FileOperations {
                     else {
                         prevVertex = null;
                         if (!prevRow.isEmpty()) prevRow.dequeue();
+                        prevRow.enqueue(null);
                     }
                 }
             }
