@@ -12,21 +12,22 @@ public class PathFinder {
 
     public static List<Vertex> findShortestPath(QueuePriority priorityObj, Vertex start, Vertex end) {
 
-        List<QueueObject> visited = new ArrayList<QueueObject>();
-
         List<Vertex> path = new ArrayList<>();
         boolean found = false;
         while (!found){
-            PriorityQueue<QueueObject> priority = QueuePriority.getCopy(priorityObj.getQueue());
+            PriorityQueue<QueueObject> priority = priorityObj.getQueue();
             QueueObject headObj = priority.poll();
-            visited.add(headObj);
 
-            if (headObj != null && !visited.contains(headObj) && headObj.getPrev().isSame(start)){
+            if (headObj != null && headObj.getPrev().isSame(start)){
+
+                PriorityQueue<QueueObject> priorityCopy = QueuePriority.getCopy(priority);
                 path.add(headObj.getPrev());
-                while (!priority.isEmpty()) {
-                    QueueObject currObj = priority.poll();
+
+                while (!priorityCopy.isEmpty()) {
+                    QueueObject currObj = priorityCopy.poll();
 
                     if (currObj != null && currObj.getPrev().isSame(headObj.getVertex())) path.add(currObj.getVertex());
+
                 }
             }
 

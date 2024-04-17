@@ -40,6 +40,7 @@ public class GraphTraverser {
 
                 QueueObject visitedQueueObj = visitedVertices.contains(neighbor);
                 if (visitedQueueObj == null) {
+                    neighbor.print(false);
                     neighbor.setHeuristicCost(newLevel);
                     neighbor.setPrev(current);
                     visitedVertices.enqueue(neighbor, current, newLevel + heuristicCost);
@@ -54,6 +55,8 @@ public class GraphTraverser {
                 }
             }
         }
+
+        System.out.println(visitQueue.isEmpty());
 
         return visitedVertices;
     }

@@ -5,7 +5,8 @@ import components.organisms.FileOperations;
 
 public class Main {
     public static void main(String[] args) {
-        Graph graph = FileOperations.parser("assets/benchmark/puzzle_320.txt");
+//        Graph graph = FileOperations.parser("assets/benchmark/puzzle_320.txt");
+        Graph graph = FileOperations.parser("assets/example/maze15_5.txt");
         QueuePriority array = GraphTraverser.aStarUnweightedGraph(graph.getStart(), graph.getEnd());
         array.print();
     }

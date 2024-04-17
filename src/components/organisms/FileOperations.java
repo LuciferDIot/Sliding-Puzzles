@@ -27,16 +27,15 @@ public class FileOperations {
             String line;
             int rowId = 0;
             while ((line = reader.readLine()) != null){
-                String[] nodeLabels = line.split("");
+                StringBuilder string = new StringBuilder(line.toUpperCase());
 
                 rowId++;
                 Vertex prevVertex = null;
-                for (int colId = 1; colId < nodeLabels.length+1; colId++){
-                    String label = nodeLabels[colId-1].toUpperCase();
+                for (int colId = 1; colId < line.length(); colId++){
+                    String label = String.valueOf(string.charAt(colId-1));
 
                     if (!label.equals("0")){
                         Vertex newVertex = graph.addVertex(colId, rowId, label);
-                        newVertex.print(false);
 
                         if (prevVertex != null) graph.addEdge(newVertex, prevVertex, null);
 
@@ -53,7 +52,10 @@ public class FileOperations {
                         prevRow.enqueue(newVertex);
                         prevVertex = newVertex;
                     }
-                    else prevVertex=null;
+                    else {
+                        prevVertex = null;
+                        if (!prevRow.isEmpty()) prevRow.dequeue();
+                    }
                 }
             }
 
