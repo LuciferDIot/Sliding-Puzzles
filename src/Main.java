@@ -1,6 +1,6 @@
 import components.atoms.Graph;
 import components.atoms.Vertex;
-import components.molecules.GraphTraverser;
+import components.organisms.GraphTraverser;
 import components.molecules.QueuePriority;
 import components.organisms.FileOperations;
 import components.organisms.PathFinder;

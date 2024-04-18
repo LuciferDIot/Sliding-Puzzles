@@ -30,8 +30,14 @@ public class FileOperations {
                 StringBuilder string = new StringBuilder(line.toUpperCase());
 
                 rowId++;
+
+                if (rowId>graph.getMaxRow()) graph.setMaxRow(rowId);
+
                 Vertex prevVertex = null;
                 for (int colId = 1; colId < line.length()+1; colId++){
+
+
+                    if (colId>graph.getMaxCol()) graph.setMaxCol(colId);
                     String label = String.valueOf(string.charAt(colId-1));
 //                    System.out.println(rowId +", "+ colId + ": "+label);
 

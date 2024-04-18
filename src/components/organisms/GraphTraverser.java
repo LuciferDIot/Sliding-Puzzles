@@ -1,6 +1,7 @@
-package components.molecules;
+package components.organisms;
 
 import components.atoms.*;
+import components.molecules.QueuePriority;
 
 public class GraphTraverser {
 
