@@ -2,155 +2,81 @@ package components.organisms;
 
 import components.atoms.Graph.Edge;
 import components.atoms.Graph.Vertex;
-import components.atoms.LinearStructure.Queue;
+import components.molecules.HashPriority;
 import components.molecules.QueueObject;
 import components.molecules.QueuePriority;
 
 public class GraphTraverser {
 
+    public static HashPriority aStarUnweightedGraph(Vertex startVertex, Vertex endVertex) {
+        // Check if startVertex or endVertex is null
+        if (startVertex == null || endVertex == null)
+            return null; // Return null if either start or end vertex is null
 
+        // Initialize a queue to store visited vertices
+        HashPriority closedList = new HashPriority();
+        // Initialize a queue to store vertices to visit
+        QueuePriority openList = new QueuePriority();
+        // Enqueue the start vertex
+        openList.enqueue(startVertex, 0);
 
-    public static QueuePriority aStarUnweightedGraph(Vertex startVertex, Vertex endVertex) {
-        if (startVertex==null || endVertex==null) return null;
+        // Enqueue the start vertex into visited vertices with its heuristic cost
+        closedList.enqueue(startVertex, null, startVertex.getHeuristicCost());
 
-        QueuePriority visitedVertices = new QueuePriority();
-        Queue<Vertex> visitQueue = new Queue<>();
-        visitQueue.enqueue(startVertex);
+        // Iterate until the visit queue is empty
+        while (!openList.isEmpty()) {
+            // Dequeue the currentVertex vertex from the visit queue
+            Vertex currentVertex = openList.dequeue();
+            // Retrieve the corresponding QueueObject from visited vertices
+            QueueObject currentQueueObj = closedList.getQueueObj(currentVertex);
 
-        // Set heuristic cost of start vertex to 0
-        startVertex.setHeuristicCost(0);
-        visitedVertices.enqueue(startVertex, null, startVertex.getHeuristicCost());
-
-        while (!visitQueue.isEmpty()) {
-            Vertex current = visitQueue.dequeue();
-            QueueObject currentQueueObj = visitedVertices.getQueueObj(current);
-
-            // Update level (actual cost from start) using the priority of the current node
-            int level = currentQueueObj.getPriority();
+            // Update level (actual cost from start) using the priority of the currentVertex node
+            int level = currentQueueObj.getLevel();
             int newLevel = level + 1;
 
-            if (current.isSame(endVertex)) {
-                // If we've reached the end vertex, break out of the loop
+            // Check if the currentVertex vertex is the end vertex
+            if (currentVertex.isSame(endVertex)) {
+                // If the end vertex is found, break out of the loop
                 System.out.println("Found end vertex");
                 break;
             }
 
-            for (Edge e : current.getEdges()) {
+            // Iterate through the edges of the currentVertex vertex
+            for (Edge e : currentVertex.getEdges()) {
                 Vertex neighbor = e.getEnd();
 
                 // Update heuristic cost for the neighbor
                 int heuristicCost = estimateHeuristicCost(neighbor, endVertex);
 
-                QueueObject visitedQueueObj = visitedVertices.contains(neighbor);
-                if (visitedQueueObj == null) {
-//                    neighbor.print(false);
+                // Check if the neighbor vertex is already visited
+                QueueObject closedVertex = closedList.contains(neighbor);
+                if (closedVertex == null) {
+                    // If the neighbor is not visited, enqueue it and update its heuristic cost
                     neighbor.setHeuristicCost(newLevel);
-                    neighbor.setPrev(current);
-                    visitedVertices.enqueue(neighbor, current, newLevel + heuristicCost);
+                    neighbor.setPrev(currentVertex);
+                    closedList.enqueue(neighbor, currentVertex, newLevel + heuristicCost);
 
+                    // Enqueue the neighbor if it's not the end vertex
                     if (!endVertex.isSame(neighbor)) {
-                        visitQueue.enqueue(neighbor);
-                    }else System.out.println("Found end vertex as a neighbor");
-
-                } else if (newLevel < visitedQueueObj.getPriority()) {
-                    visitedQueueObj.setPriority(newLevel);
-                    visitedQueueObj.setPrev(current);
+                        openList.enqueue(neighbor, newLevel + heuristicCost);
+                    } else {
+                        System.out.println("Found end vertex as a neighbor");
+                    }
+                } else if (newLevel < closedVertex.getPriority()) {
+                    // Update the priority if the new level is lower
+                    closedVertex.setPriority(newLevel);
+                    closedVertex.setPrev(currentVertex);
                 }
             }
         }
 
-        System.out.println(visitQueue.isEmpty());
-
-        return visitedVertices;
+        return closedList;
     }
 
+    // Method to estimate the heuristic cost (Manhattan distance) between two vertices
     private static int estimateHeuristicCost(Vertex vertex, Vertex goal) {
-        // For simplicity in an unweighted graph, can use the Manhattan distance
-        // or simply return 0 as the heuristic cost, assuming all edges have equal cost.
         int dx = Math.abs(vertex.getX() - goal.getX());
         int dy = Math.abs(vertex.getY() - goal.getY());
         return dx + dy;
     }
-
-//    public static void depthFirstTraversal(Vertex start, ArrayList<Vertex> visitedVertices) {
-//        Stack<Vertex> stack = new Stack<>();
-//        Stack<Vertex> pathFromRoot = new Stack<>();
-//
-//        pathFromRoot.push(start);
-//        stack.push(start);
-//
-//        while (!stack.isEmpty()) {
-//            Vertex current = stack.pop();
-//            pathFromRoot.push(current);
-//
-//            if (!visitedVertices.contains(current)) {
-//                System.out.println(current.getData());
-//                visitedVertices.add(current);
-//                for (Edge e : current.getEdges()) {
-//                    Vertex neighbor = e.getEnd();
-//                    if (!visitedVertices.contains(neighbor)) {
-//                        stack.push(neighbor);
-//                    }
-//                }
-//            }
-//        }
-//    }
-//
-//    public static void dijkstraUnweightedGraph(Vertex startVertex, Vertex endVertex) {
-//        QueuePriority visitedVertices = new QueuePriority();
-//        Queue<Vertex> visitQueue = new Queue<>();
-//        visitQueue.enqueue(startVertex);
-//        int level=0;
-//        visitedVertices.enqueue(startVertex, null, level);
-//
-//        while (!visitQueue.isEmpty()) {
-//            Vertex current = visitQueue.dequeue();
-//            QueueObject currentQueueObj= visitedVertices.getQueueObj(current);
-//            level = currentQueueObj.getPriority();
-//
-//            for (Edge e: current.getEdges()) {
-//                Vertex neighbor = e.getEnd();
-//                if (!visitedVertices.contains(neighbor)) {
-//                    visitedVertices.enqueue(neighbor, current, level+1);
-//
-//                    if (!endVertex.equals(neighbor)) visitQueue.enqueue(neighbor);
-//                } else {
-//                    QueueObject neighborQueueObj= visitedVertices.getQueueObj(neighbor);
-//                    if (neighborQueueObj.compareTo(currentQueueObj)>0) {
-//                        neighborQueueObj.setPriority(level + 1);
-//                        neighborQueueObj.setPrev(current);
-//                    }
-//                }
-//            }
-//        }
-//    }
-
-//    public static void aStarUnweightedGraph(Vertex startVertex, Vertex endVertex) {
-//        QueuePriority visitedVertices = new QueuePriority();
-//        Queue visitQueue = new Queue();
-//        visitQueue.enqueue(startVertex);
-//        int level=0;
-//        visitedVertices.enqueue(startVertex, null, level);
-//
-//        while (!visitQueue.isEmpty()) {
-//            Vertex current = visitQueue.dequeue();
-//            QueueObject currentQueueObj= visitedVertices.getQueueObj(current);
-//            level = currentQueueObj.getPriority();
-//
-//            for (Edge e: current.getEdges()) {
-//                Vertex neighbor = e.getEnd();
-//                if (!visitedVertices.contains(neighbor)) {
-//                    visitedVertices.enqueue(neighbor, current, level+1);
-//
-//                    if (!endVertex.equals(neighbor)) visitQueue.enqueue(neighbor);
-//                } else {
-//                    QueueObject neighborQueueObj= visitedVertices.getQueueObj(neighbor);
-//                    if (neighborQueueObj.compareTo(currentQueueObj)>0) {
-//                        neighborQueueObj.setPriority(level + 1);
-//                        neighborQueueObj.setPrev(current);
-//                    }
-//                }
-//            }
-//        }
-//    }
 }

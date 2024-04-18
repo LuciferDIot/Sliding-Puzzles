@@ -1,44 +1,61 @@
 package components.organisms;
 
+import components.molecules.HashPriority;
 import components.molecules.QueueObject;
 import components.atoms.Graph.Vertex;
-import components.molecules.QueuePriority;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PathHandler {
 
-    public static List<Vertex> findShortestPath(QueuePriority minHeap, Vertex start, Vertex end) {
+    /**
+     * Finds the shortest path from start to end vertex using a closed list (QueuePriority).
+     *
+     * @param closedList The closed list (QueuePriority) containing visited vertices.
+     * @param start The start vertex of the path.
+     * @param end The end vertex of the path.
+     * @return The shortest path from start to end vertex, or null if closedList is empty or end vertex is not found.
+     */
+    public static List<Vertex> findShortestPath(HashPriority closedList, Vertex start, Vertex end) {
+        // Check if the closedList is empty
+        if (closedList.isEmpty()) return null; // Return null if the closedList is empty
 
-        if (minHeap.isEmpty()) return null;
-
+        // Initialize a list to store the shortest path
         List<Vertex> path = new ArrayList<>();
 
-        QueueObject endQueueObj = minHeap.contains(end);
-        if (endQueueObj == null) return null;
+        // Check if the end vertex exists in the closedList
+        QueueObject endQueueObj = closedList.contains(end);
+        if (endQueueObj == null)
+            return null; // Return null if the end vertex is not found
         else {
-
+            // Initialize a variable to store the previous QueueObject
             QueueObject prevQueueObj = endQueueObj;
 
+            // Flag to track if the shortest path is found
             boolean found = false;
             while (!found) {
-
+                // Add the current vertex to the path
                 path.add(prevQueueObj.getVertex());
-                QueueObject currQueueObj = minHeap.contains(prevQueueObj.getPrev());
+                // Retrieve the QueueObject for the previous vertex
+                QueueObject currQueueObj = closedList.contains(prevQueueObj.getPrev());
 
+                // Check if the previous vertex is the start vertex
                 if (currQueueObj.getPrev().isSame(start)) {
+                    // Add the current and previous vertices to the path and set found to true
                     path.add(currQueueObj.getVertex());
                     path.add(currQueueObj.getPrev());
                     found = true;
                 }
 
+                // Update the previous QueueObject
                 prevQueueObj = currQueueObj;
             }
         }
+        // Reverse the path and return it
         return path.reversed();
-
     }
+
 
     public static void printPath(List<Vertex> path) {
 
