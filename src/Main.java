@@ -16,9 +16,9 @@ public class Main {
 //        Graph graph = FileOperations.parser("assets/example/maze20_2.txt");
         HashPriority closedList = GraphTraverser.aStarUnweightedGraph(graph.getStart(), graph.getEnd());
 
-        closedList.print();
+//        closedList.print();
 
-//        List<Vertex> array = PathHandler.findShortestPath(closedList, graph.getStart(), graph.getEnd());
+        List<Vertex> array = PathHandler.findShortestPath(closedList, graph.getStart(), graph.getEnd());
 //        if (array != null){
 //            for (Map.Entry<Vertex, QueueObject> v : closedList.getQueue().entrySet()) {
 //                QueueObject cu = v.getValue();
@@ -26,6 +26,6 @@ public class Main {
 ////                System.out.println(cu.getPriority()+"--> ("+ cu.getVertex().getX()+ ", " + cu.getVertex().getY() + ")");
 //            }
 //        }
-//        PathHandler.printPath(array);
+        PathHandler.printPath(array);
     }
 }
