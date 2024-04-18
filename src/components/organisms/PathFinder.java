@@ -1,58 +1,41 @@
 package components.organisms;
 
-import components.atoms.QueueObject;
-import components.atoms.Vertex;
+import components.molecules.QueueObject;
+import components.atoms.Graph.Vertex;
 import components.molecules.QueuePriority;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 public class PathFinder {
 
-    public static List<Vertex> findShortestPath(QueuePriority priorityObj, Vertex start, Vertex end) {
+    public static List<Vertex> findShortestPath(QueuePriority minHeap, Vertex start, Vertex end) {
 
-        if (priorityObj.isEmpty()) return null;
+        if (minHeap.isEmpty()) return null;
 
         List<Vertex> path = new ArrayList<>();
 
-        boolean found = false;
-        while (!found && !priorityObj.isEmpty()){
-            QueueObject headObj = priorityObj.dequeue();
-            System.out.println("priority "+priorityObj.getSize());
+        QueueObject endQueueObj = minHeap.contains(end);
+        if (endQueueObj == null) return null;
+        else {
 
-            if (headObj.getVertex().isSame(start)) continue;
+            QueueObject prevQueueObj = endQueueObj;
 
-            if (headObj.getPrev().isSame(start)){
+            boolean found = false;
+            while (!found) {
 
-                PriorityQueue<QueueObject> priorityCopy = QueuePriority.getCopy(priorityObj.getQueue());
-                path.add(headObj.getPrev());
+                path.add(prevQueueObj.getVertex());
+                QueueObject currQueueObj = minHeap.contains(prevQueueObj.getPrev());
 
-                while (!priorityCopy.isEmpty()) {
-                    QueueObject currObj = priorityCopy.poll();
-                    System.out.println("priorityCopy "+priorityCopy.size());
-
-                    if (currObj != null && currObj.getPrev().isSame(headObj.getVertex())) {
-                        path.add(currObj.getVertex());
-
-                        System.out.println("Current path");
-                        currObj.print();
-
-                        end.print(false);
-                        if (currObj.getVertex().isSame(end)) {
-                            System.out.println("Found");
-                            found = true;
-                            break;
-                        }
-                        headObj = currObj;
-                    }
-
+                if (currQueueObj.getPrev().isSame(start)) {
+                    path.add(currQueueObj.getVertex());
+                    path.add(currQueueObj.getPrev());
+                    found = true;
                 }
+
+                prevQueueObj = currQueueObj;
             }
-
-            if (!found) path.clear();;
         }
-
         return path;
 
     }

@@ -1,4 +1,4 @@
-package components.atoms;
+package components.atoms.LinearStructure.LinkedList;
 
 public class Node<T> {
 

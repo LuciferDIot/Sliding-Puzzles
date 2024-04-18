@@ -1,4 +1,4 @@
-package components.atoms;
+package components.atoms.Graph;
 
 public class Edge {
 

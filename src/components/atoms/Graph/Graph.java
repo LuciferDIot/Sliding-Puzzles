@@ -1,20 +1,38 @@
-package components.atoms;
-
-import java.util.ArrayList;
+package components.atoms.Graph;
 
 public class Graph {
 
     private Vertex start;
     private Vertex end;
+    private int maxRow, maxCol;
     private final boolean isWeighted;
     private final boolean isDirected;
 
     public Graph(boolean inputIsWeighted, boolean inputIsDirected) {
         this.isDirected = inputIsDirected;
         this.isWeighted = inputIsWeighted;
+        this.maxRow = 0;
+        this.maxCol = 0;
     }
 
-    public Vertex addVertex(int x, int y, String label) {
+
+    public int getMaxCol() {
+        return maxCol;
+    }
+
+    public void setMaxCol(int maxCol) {
+        this.maxCol = maxCol;
+    }
+
+    public int getMaxRow() {
+        return maxRow;
+    }
+
+    public void setMaxRow(int maxRow) {
+        this.maxRow = maxRow;
+    }
+
+    public Vertex addVertex(int x, int y, char label) {
         return new Vertex(x, y, label);
     }
 
@@ -46,7 +64,7 @@ public class Graph {
         }
     }
 
-    public void removeEdge(Vertex vertex1, Vertex vertex2, Integer weight) {
+    public void removeEdge(Vertex vertex1, Vertex vertex2) {
         vertex1.removeEdge(vertex2);
 
         if (!this.isDirected) vertex2.removeEdge(vertex1);

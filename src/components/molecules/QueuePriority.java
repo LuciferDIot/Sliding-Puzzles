@@ -1,18 +1,16 @@
 package components.molecules;
 
-import components.atoms.QueueObject;
-import components.atoms.Vertex;
+import components.atoms.Graph.Vertex;
 
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.HashMap;
+import java.util.Map;
 
 public class QueuePriority {
 
-    private final PriorityQueue<QueueObject> queue;
+    private final Map<Vertex, QueueObject> queue;
 
     public QueuePriority() {
-        // Initialize the priority queue with a comparator based on priority
-        this.queue = new PriorityQueue<>(Comparator.comparingInt(QueueObject::getPriority));
+        this.queue = new HashMap<>();
     }
 
     public boolean isEmpty() {
@@ -21,51 +19,46 @@ public class QueuePriority {
 
     public void enqueue(Vertex vertex, Vertex prev, int priority) {
         if (vertex != null) {
-            queue.offer(new QueueObject(vertex, prev, priority));
+            queue.put(vertex, new QueueObject(vertex, prev, priority));
         }
     }
 
     public QueueObject dequeue() {
-        return queue.poll();
+        if (!isEmpty()) {
+            QueueObject next = peek();
+            queue.remove(next.getVertex());
+            return next;
+        }
+        return null;
     }
 
     public QueueObject peek() {
-        return queue.peek();
+        return queue.isEmpty() ? null : queue.values().stream().min((q1, q2) -> Integer.compare(q1.getPriority(), q2.getPriority())).orElse(null);
     }
 
     public QueueObject contains(Vertex vertex) {
-        for (QueueObject element : queue) {
-            if (element.getVertex().isSame(vertex)) {
-                return element;
-            }
-        }
-        return null;
+        return queue.get(vertex);
     }
 
-    public PriorityQueue<QueueObject> getQueue() {
+    public Map<Vertex, QueueObject> getQueue() {
         return queue;
     }
 
-    public static PriorityQueue<QueueObject> getCopy(PriorityQueue<QueueObject> queue) {
-        return new PriorityQueue<>(queue);
+    public static Map<Vertex, QueueObject> getCopy(Map<Vertex, QueueObject> queue) {
+        return new HashMap<>(queue);
     }
 
     public QueueObject getQueueObj(Vertex vertex) {
-        for (QueueObject element : queue) {
-            if (element.getVertex().equals(vertex)) {
-                return element;
-            }
-        }
-        return null;
+        return queue.get(vertex);
     }
 
     public int getSize() {
         return queue.size();
     }
 
-    public void print(){
+    public void print() {
         System.out.println("Size of queue: " + queue.size());
-        for (QueueObject element : this.queue) {
+        for (QueueObject element : queue.values()) {
             element.print();
         }
     }

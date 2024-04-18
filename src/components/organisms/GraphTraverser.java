@@ -1,12 +1,18 @@
-package components.molecules;
+package components.organisms;
 
-import components.atoms.*;
+import components.atoms.Graph.Edge;
+import components.atoms.Graph.Vertex;
+import components.atoms.LinearStructure.Queue;
+import components.molecules.QueueObject;
+import components.molecules.QueuePriority;
 
 public class GraphTraverser {
 
 
 
     public static QueuePriority aStarUnweightedGraph(Vertex startVertex, Vertex endVertex) {
+        if (startVertex==null || endVertex==null) return null;
+
         QueuePriority visitedVertices = new QueuePriority();
         Queue<Vertex> visitQueue = new Queue<>();
         visitQueue.enqueue(startVertex);
