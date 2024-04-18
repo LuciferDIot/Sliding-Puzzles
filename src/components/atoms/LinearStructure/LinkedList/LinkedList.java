@@ -3,43 +3,42 @@ package components.atoms.LinearStructure.LinkedList;
 public class LinkedList<T> {
 
     private Node<T> head;
-    private static int size=0;
+    private Node<T> tail;
+    private static int size = 0;
 
-    public LinkedList(){
+    public LinkedList() {
         this.head = null;
+        this.tail = null;
     }
 
-    public void addToHead(T data){
+    public void addToHead(T data) {
         Node<T> newHead = new Node<>(data);
         Node<T> currentHead = this.head;
         this.head = newHead;
 
-        if(currentHead != null) this.head.setNextNode(currentHead);
+        if (currentHead != null) this.head.setNextNode(currentHead);
+        else this.tail = newHead; // Update tail if list was empty
         size++;
     }
 
-    public void addToTail(T data){
-        Node<T> tail = this.head;
-        if(tail == null) this.head = new Node<>(data);
-
-        else {
-            while (tail.getNextNode() !=null){
-                tail = tail.getNextNode();
-            }
-            tail.setNextNode(new Node<>(data));
+    public void addToTail(T data) {
+        Node<T> newNode = new Node<>(data);
+        if (this.tail == null) {
+            this.head = newNode;
+            this.tail = newNode;
+        } else {
+            this.tail.setNextNode(newNode);
+            this.tail = newNode;
         }
         size++;
     }
 
-    public void addToMiddle(Node<T> prev, Node<T> newest){
-
-    }
-
-    public T removeHead(){
+    public T removeHead() {
         Node<T> removedHead = this.head;
-        if (removedHead==null) return null;
+        if (removedHead == null) return null;
 
         this.head = this.head.getNextNode();
+        if (this.head == null) this.tail = null; // Update tail if list becomes empty
         size--;
         return removedHead.getData();
     }
@@ -54,7 +53,6 @@ public class LinkedList<T> {
         }
         return null;
     }
-
 
     public static int getSize() {
         return size;

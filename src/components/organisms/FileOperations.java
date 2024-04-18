@@ -59,8 +59,8 @@ public class FileOperations {
                             }
                         }
 
-                        if (Objects.equals(newVertex.getLabel(), 'S')) graph.setStart(newVertex);
-                        if (Objects.equals(newVertex.getLabel(), 'F')) graph.setEnd(newVertex);
+                        if (label== 'S') graph.setStart(newVertex);
+                        if (label== 'F') graph.setEnd(newVertex);
 
                         prevRow.enqueue(newVertex);
                         prevVertex = newVertex;
