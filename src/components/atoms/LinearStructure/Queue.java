@@ -1,4 +1,6 @@
-package components.atoms;
+package components.atoms.LinearStructure;
+
+import components.atoms.LinearStructure.LinkedList.LinkedList;
 
 public class Queue<T> {
 

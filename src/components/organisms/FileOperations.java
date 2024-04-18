@@ -1,8 +1,8 @@
 package components.organisms;
 
-import components.atoms.Graph;
-import components.atoms.Queue;
-import components.atoms.Vertex;
+import components.atoms.Graph.Graph;
+import components.atoms.LinearStructure.Queue;
+import components.atoms.Graph.Vertex;
 
 import java.io.*;
 import java.util.Objects;
@@ -27,7 +27,6 @@ public class FileOperations {
             String line;
             int rowId = 0;
             while ((line = reader.readLine()) != null){
-                StringBuilder string = new StringBuilder(line.toUpperCase());
 
                 rowId++;
 
@@ -35,13 +34,11 @@ public class FileOperations {
 
                 Vertex prevVertex = null;
                 for (int colId = 1; colId < line.length()+1; colId++){
-
-
                     if (colId>graph.getMaxCol()) graph.setMaxCol(colId);
-                    String label = String.valueOf(string.charAt(colId-1));
-//                    System.out.println(rowId +", "+ colId + ": "+label);
 
-                    if (!label.equals("0")){
+                    char label = line.charAt(colId-1);
+
+                    if (label != '0') {
                         Vertex newVertex = graph.addVertex(colId, rowId, label);
 
                         if (prevVertex != null) graph.addEdge(newVertex, prevVertex, null);
@@ -56,12 +53,12 @@ public class FileOperations {
                             }
                             else if(headVertex.isSameColumn(newVertex)) {
                                 headVertex = prevRow.dequeue();
-                                if (headVertex.getLabel()!=null) graph.addEdge(headVertex, newVertex, null);
+                                if (headVertex.getLabel()!='0') graph.addEdge(headVertex, newVertex, null);
                             }
                         }
 
-                        if (Objects.equals(newVertex.getLabel(), "S")) graph.setStart(newVertex);
-                        if (Objects.equals(newVertex.getLabel(), "F")) graph.setEnd(newVertex);
+                        if (Objects.equals(newVertex.getLabel(), 'S')) graph.setStart(newVertex);
+                        if (Objects.equals(newVertex.getLabel(), 'F')) graph.setEnd(newVertex);
 
                         prevRow.enqueue(newVertex);
                         prevVertex = newVertex;
@@ -69,7 +66,7 @@ public class FileOperations {
                     else {
                         prevVertex = null;
                         if (!prevRow.isEmpty()) prevRow.dequeue();
-                        prevRow.enqueue(new Vertex(colId, rowId, null));
+                        prevRow.enqueue(new Vertex(colId, rowId, '0'));
                     }
                 }
             }

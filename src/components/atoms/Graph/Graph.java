@@ -1,6 +1,4 @@
-package components.atoms;
-
-import java.util.ArrayList;
+package components.atoms.Graph;
 
 public class Graph {
 
@@ -34,7 +32,7 @@ public class Graph {
         this.maxRow = maxRow;
     }
 
-    public Vertex addVertex(int x, int y, String label) {
+    public Vertex addVertex(int x, int y, char label) {
         return new Vertex(x, y, label);
     }
 
@@ -66,7 +64,7 @@ public class Graph {
         }
     }
 
-    public void removeEdge(Vertex vertex1, Vertex vertex2, Integer weight) {
+    public void removeEdge(Vertex vertex1, Vertex vertex2) {
         vertex1.removeEdge(vertex2);
 
         if (!this.isDirected) vertex2.removeEdge(vertex1);

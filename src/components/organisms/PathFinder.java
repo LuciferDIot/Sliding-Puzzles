@@ -1,12 +1,11 @@
 package components.organisms;
 
-import components.atoms.QueueObject;
-import components.atoms.Vertex;
+import components.molecules.QueueObject;
+import components.atoms.Graph.Vertex;
 import components.molecules.QueuePriority;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PriorityQueue;
 
 public class PathFinder {
 

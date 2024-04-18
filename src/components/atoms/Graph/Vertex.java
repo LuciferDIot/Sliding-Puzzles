@@ -1,17 +1,17 @@
-package components.atoms;
+package components.atoms.Graph;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class Vertex {
 
-    private final String label;
+    private final char label;
     private final List<Edge> edges;
     private final int x, y;
     private int heuristicCost; // Heuristic cost from this vertex to the goal
     private Vertex prev; // Previous vertex in the shortest path
 
-    public Vertex(int x, int y, String label){
+    public Vertex(int x, int y, char label){
         this.edges = new ArrayList<Edge>();
         this.x = x;
         this.y = y;
@@ -28,7 +28,7 @@ public class Vertex {
         this.edges.removeIf(edge -> edge.getEnd().equals(endVertex));
     }
 
-    public String getLabel() {
+    public char getLabel() {
         return label;
     }
 

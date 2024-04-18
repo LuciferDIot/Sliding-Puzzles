@@ -1,5 +1,5 @@
-import components.atoms.Graph;
-import components.atoms.Vertex;
+import components.atoms.Graph.Graph;
+import components.atoms.Graph.Vertex;
 import components.organisms.GraphTraverser;
 import components.molecules.QueuePriority;
 import components.organisms.FileOperations;

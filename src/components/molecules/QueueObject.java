@@ -1,4 +1,6 @@
-package components.atoms;
+package components.molecules;
+
+import components.atoms.Graph.Vertex;
 
 public class QueueObject implements Comparable<QueueObject>{
     private final Vertex vertex;

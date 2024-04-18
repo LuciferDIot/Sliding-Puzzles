@@ -1,7 +1,6 @@
 package components.molecules;
 
-import components.atoms.QueueObject;
-import components.atoms.Vertex;
+import components.atoms.Graph.Vertex;
 
 import java.util.HashMap;
 import java.util.Map;

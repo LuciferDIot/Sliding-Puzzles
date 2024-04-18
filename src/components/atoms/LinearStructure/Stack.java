@@ -1,4 +1,4 @@
-package components.atoms;
+package components.atoms.LinearStructure;
 
 import java.util.ArrayList;
 
