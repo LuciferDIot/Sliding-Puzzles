@@ -21,10 +21,12 @@ public class Vertex {
     }
 
     public void addEdge(Vertex endVertex, Integer weight){
+        /* store created an edge object for the connection between endVertex and current vertex inside this edge list */
         this.edges.add(new Edge(this, endVertex, weight));
     }
 
     public void removeEdge(Vertex endVertex){
+        /* remove connection between this and endVertex vertexes by removing edge from this edge list */
         this.edges.removeIf(edge -> edge.getEnd().equals(endVertex));
     }
 
