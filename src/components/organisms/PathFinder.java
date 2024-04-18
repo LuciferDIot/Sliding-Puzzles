@@ -37,7 +37,7 @@ public class PathFinder {
                 prevQueueObj = currQueueObj;
             }
         }
-        return path.reversed();
+        return path;
 
     }
 }
