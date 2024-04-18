@@ -90,15 +90,28 @@ public class Vertex {
         System.out.println(message);
     }
 
-    public boolean isSameColumn(Vertex o) {
-        return this.x == o.getX();
+    public String getCoordinates() {
+        return "("+this.x+", "+this.y+")";
     }
+
 
     public boolean isSame(Vertex vertex) {
         return this.getX()==vertex.getX() && this.getY()==vertex.getY();
     }
 
-    public boolean isColumnHigher(Vertex newVertex) {
-        return this.getX()<newVertex.getX();
+    public boolean isColumnHigher(Vertex end) {
+        return this.getX()<end.getX();
+    }
+
+    public boolean isRowHigher(Vertex end) {
+        return this.getY()<end.getY();
+    }
+
+    public boolean isSameRow(Vertex end) {
+        return this.getY() == end.getY();
+    }
+
+    public boolean isSameColumn(Vertex o) {
+        return this.x == o.getX();
     }
 }

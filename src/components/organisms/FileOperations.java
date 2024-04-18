@@ -28,6 +28,8 @@ public class FileOperations {
             int rowId = 0;
             while ((line = reader.readLine()) != null){
 
+                System.out.println("Loading line ..... "+ rowId);
+
                 rowId++;
 
                 if (rowId>graph.getMaxRow()) graph.setMaxRow(rowId);
@@ -57,8 +59,8 @@ public class FileOperations {
                             }
                         }
 
-                        if (Objects.equals(newVertex.getLabel(), 'S')) graph.setStart(newVertex);
-                        if (Objects.equals(newVertex.getLabel(), 'F')) graph.setEnd(newVertex);
+                        if (label== 'S') graph.setStart(newVertex);
+                        if (label== 'F') graph.setEnd(newVertex);
 
                         prevRow.enqueue(newVertex);
                         prevVertex = newVertex;
