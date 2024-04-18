@@ -17,10 +17,13 @@ public class HashPriority {
         return queue.isEmpty();
     }
 
-    public void enqueue(Vertex vertex, Vertex prev, int priority) {
+    public QueueObject enqueue(Vertex vertex, Vertex prev, int priority) {
+        QueueObject newQueueObj = null;
         if (vertex != null) {
-            queue.put(vertex, new QueueObject(vertex, prev, priority));
+            newQueueObj = new QueueObject(vertex, prev, priority);
+            queue.put(vertex, newQueueObj);
         }
+        return newQueueObj;
     }
 
     public QueueObject dequeue() {

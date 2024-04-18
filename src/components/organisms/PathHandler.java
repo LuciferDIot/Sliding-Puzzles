@@ -36,15 +36,15 @@ public class PathHandler {
             boolean found = false;
             while (!found) {
                 // Add the current vertex to the path
-                path.add(prevQueueObj.getVertex());
+                if (!path.contains(prevQueueObj.getVertex())) path.add(prevQueueObj.getVertex());
                 // Retrieve the QueueObject for the previous vertex
                 QueueObject currQueueObj = closedList.contains(prevQueueObj.getPrev());
 
                 // Check if the previous vertex is the start vertex
                 if (currQueueObj.getPrev().isSame(start)) {
                     // Add the current and previous vertices to the path and set found to true
-                    path.add(currQueueObj.getVertex());
-                    path.add(currQueueObj.getPrev());
+                    if (!path.contains(currQueueObj.getVertex())) path.add(currQueueObj.getVertex());
+                    if (!path.contains(currQueueObj.getPrev())) path.add(currQueueObj.getPrev());
                     found = true;
                 }
 

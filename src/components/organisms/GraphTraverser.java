@@ -27,12 +27,12 @@ public class GraphTraverser {
         while (!openList.isEmpty()) {
             // Dequeue the currentVertex vertex from the visit queue
             Vertex currentVertex = openList.dequeue();
+
             // Retrieve the corresponding QueueObject from visited vertices
             QueueObject currentQueueObj = closedList.getQueueObj(currentVertex);
-
             // Update level (actual cost from start) using the priority of the currentVertex node
             int level = currentQueueObj.getLevel();
-            int newLevel = level + 1;
+            int actualCost = level + 1;
 
             // Check if the currentVertex vertex is the end vertex
             if (currentVertex.isSame(endVertex)) {
@@ -52,19 +52,20 @@ public class GraphTraverser {
                 QueueObject closedVertex = closedList.contains(neighbor);
                 if (closedVertex == null) {
                     // If the neighbor is not visited, enqueue it and update its heuristic cost
-                    neighbor.setHeuristicCost(newLevel);
+                    neighbor.setHeuristicCost(actualCost);
                     neighbor.setPrev(currentVertex);
-                    closedList.enqueue(neighbor, currentVertex, newLevel + heuristicCost);
+                    QueueObject newQueueObj =closedList.enqueue(neighbor, currentVertex, actualCost + heuristicCost);
+                    newQueueObj.setLevel(actualCost);
 
                     // Enqueue the neighbor if it's not the end vertex
                     if (!endVertex.isSame(neighbor)) {
-                        openList.enqueue(neighbor, newLevel + heuristicCost);
+                        openList.enqueue(neighbor, actualCost + heuristicCost);
                     } else {
                         System.out.println("Found end vertex as a neighbor");
                     }
-                } else if (newLevel < closedVertex.getPriority()) {
+                } else if (actualCost + heuristicCost < closedVertex.getPriority()) {
                     // Update the priority if the new level is lower
-                    closedVertex.setPriority(newLevel);
+                    closedVertex.setPriority(actualCost);
                     closedVertex.setPrev(currentVertex);
                 }
             }
