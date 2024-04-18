@@ -28,6 +28,8 @@ public class FileOperations {
             int rowId = 0;
             while ((line = reader.readLine()) != null){
 
+                System.out.println("Loading line ..... "+ rowId);
+
                 rowId++;
 
                 if (rowId>graph.getMaxRow()) graph.setMaxRow(rowId);
