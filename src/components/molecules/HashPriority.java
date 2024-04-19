@@ -2,6 +2,7 @@ package components.molecules;
 
 import components.atoms.Graph.Vertex;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,19 +37,11 @@ public class HashPriority {
     }
 
     public QueueObject peek() {
-        return queue.isEmpty() ? null : queue.values().stream().min((q1, q2) -> Integer.compare(q1.getPriority(), q2.getPriority())).orElse(null);
+        return queue.isEmpty() ? null : queue.values().stream().min(Comparator.comparingInt(QueueObject::getPriority)).orElse(null);
     }
 
     public QueueObject contains(Vertex vertex) {
         return queue.get(vertex);
-    }
-
-    public Map<Vertex, QueueObject> getQueue() {
-        return queue;
-    }
-
-    public static Map<Vertex, QueueObject> getCopy(Map<Vertex, QueueObject> queue) {
-        return new HashMap<>(queue);
     }
 
     public QueueObject getQueueObj(Vertex vertex) {

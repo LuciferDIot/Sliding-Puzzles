@@ -55,7 +55,6 @@ public class GraphTraverser {
                 if (closedVertex == null) {
                     // If the neighbor is not visited, enqueue it and update its heuristic cost
                     neighbor.setHeuristicCost(actualCost);
-                    neighbor.setPrev(currentVertex);
                     QueueObject newQueueObj =closedList.enqueue(neighbor, currentVertex, actualCost + heuristicCost);
                     newQueueObj.setLevel(actualCost);
 

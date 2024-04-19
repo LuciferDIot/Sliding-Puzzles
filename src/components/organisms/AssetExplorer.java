@@ -50,6 +50,6 @@ public class AssetExplorer {
             System.out.println("No files or folders found in the specified directory.");
         }
 
-        return returnFile==null?returnFile:(path+returnFile.split(path)[1]);
+        return returnFile==null? null :(path+returnFile.split(path)[1]);
     }
 }

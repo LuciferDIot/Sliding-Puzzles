@@ -53,17 +53,18 @@ public class Graph {
     public void addEdge(Vertex vertex1, Vertex vertex2, Integer weight) {
         /* This method use to add edges for both vertex1 and vertex2 */
 
-        // checking the graph is weighted. if it is not it will set the weight value to null.
+        // Checking the graph is weighted.
+        // If it is not, it will set the weight value to null.
         // It won't consider which value is passed through the method it will reassign null if the graph is unweighted.
         if (!this.isWeighted) {
             weight=null;
         }
 
-        // set vertex1 as start and vertex2 as end
+        // set vertex1 as start and vertex2 as an end
         vertex1.addEdge(vertex2, weight);
 
         // if this is an undirected graph
-        // set vertex2 as start and vertex1 as end
+        // set vertex2 as start and vertex1 as an end
         if (!this.isDirected) {
             vertex2.addEdge(vertex1, weight);
         }
