@@ -18,7 +18,7 @@ public class Main {
         while (true) {
             try {
                 if (loop > 0) {
-                    System.out.print("\n\n\nDo you want to continue? Press 1 : ");
+                    System.out.print("\n\n\n1. Yes \n2. No \nDo you want to continue? : ");
                     int choice = scanner.nextInt();
                     if (choice != 1) break;
                 }
@@ -38,6 +38,8 @@ public class Main {
                 int choice = scanner.nextInt();
                 if (choice == 1) isAStar = false;
 
+                System.out.println("\n\n------------- Starting to find shortest path using " +
+                        (choice==1?"A*":"Dijkstra") + " -------------\n");
                 HashPriority closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), isAStar);
 
                 if (closedList == null) {
@@ -59,18 +61,5 @@ public class Main {
             }
         }
         scanner.close();
-    }
-
-
-    public static void mai(String[] args) {
-//        Graph graph = FileOperations.parser("assets/benchmark/puzzle_2560.txt");
-        Graph graph = FileOperations.parser("assets/example/maze10_2.txt");
-        HashPriority closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), true);
-
-        List<Vertex> array = PathHandler.findShortestPath(closedList, graph.getStart(), graph.getEnd());
-        if (array!=null) PathHandler.printPath(array);
-        else System.out.println("No path found");
-        graph.getStart().print(false);
-        graph.getEnd().print(false);
     }
 }
