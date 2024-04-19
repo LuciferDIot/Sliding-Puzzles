@@ -34,7 +34,7 @@ public class Main {
 
 
                 boolean isAStar = true;
-                System.out.print("\n\n\n1.Exact shortest path \n2. Quick way to end \nEnter the choice : ");
+                System.out.print("\n\n\n1. Exact shortest path \n2. Quick way to end \nEnter the choice : ");
                 int choice = scanner.nextInt();
                 if (choice == 1) isAStar = false;
 
