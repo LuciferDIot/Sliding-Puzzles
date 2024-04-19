@@ -67,7 +67,7 @@ public class Vertex {
     }
 
     public void print(boolean showWeight) {
-        String message = "";
+        StringBuilder message = new StringBuilder();
 
         if (this.edges.isEmpty()) {
             System.out.println(this.getData() + " -->");
@@ -76,17 +76,17 @@ public class Vertex {
 
         for(int i = 0; i < this.edges.size(); i++) {
             if (i == 0) {
-                message += this.edges.get(i).getStart().getData() + " -->  ";
+                message.append(this.edges.get(i).getStart().getData()).append(" -->  ");
             }
 
-            message += this.edges.get(i).getEnd().getData();
+            message.append(this.edges.get(i).getEnd().getData());
 
             if (showWeight) {
-                message += " (" + this.edges.get(i).getWeight() + ")";
+                message.append(" (").append(this.edges.get(i).getWeight()).append(")");
             }
 
             if (i != this.edges.size() - 1) {
-                message += ", ";
+                message.append(", ");
             }
         }
         System.out.println(message);

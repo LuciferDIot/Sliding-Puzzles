@@ -58,7 +58,7 @@ public class FileOperations {
                         if (prevVertex != null) graph.addEdge(newVertex, prevVertex, null);
 
                         // Process the previous row to handle possible connections
-                        if (!prevRow.isEmpty() && line.length() <= prevRow.size()) {
+                        if (!prevRow.isEmpty() && totalRowCol[1] == prevRow.size()) {
                             Vertex headVertex = prevRow.peek();
                             if (headVertex.isColumnHigher(newVertex)) {
                                 while (headVertex.isColumnHigher(newVertex)) {
@@ -81,7 +81,7 @@ public class FileOperations {
                     } else {
                         // Reset the previous vertex and dequeue from the previous row queue
                         prevVertex = null;
-                        if (!prevRow.isEmpty()) prevRow.dequeue();
+                        if (!prevRow.isEmpty() && totalRowCol[1] == prevRow.size()) prevRow.dequeue();
                         prevRow.enqueue(new Vertex(colId, rowId, '0'));
                     }
                 }

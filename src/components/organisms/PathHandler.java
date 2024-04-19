@@ -19,6 +19,7 @@ public class PathHandler {
      * @return The shortest path from start to end vertex, or null if closedList is empty or end vertex is not found.
      */
     public static List<Vertex> findShortestPath(HashPriority closedList, Vertex start, Vertex end) {
+
         // Check if the closedList is empty
         if (closedList.isEmpty()) return null; // Return null if the closedList is empty
 
@@ -59,30 +60,30 @@ public class PathHandler {
 
 
     public static void printPath(List<Vertex> path) {
-        Vertex prevVertex = null, nextVertex = null;
+        Vertex prevVertex = null, nextVertex = null, currentVertex=null;
         for (int i = 0; i < path.size(); i++) {
-            Vertex currentVertex = path.get(i);
-            if (i!=0) prevVertex = path.get(i - 1);
+
             if (i+1!=path.size()) nextVertex = path.get(i + 1);
 
             if (i == 0) {
+                currentVertex = path.get(i);
                 System.out.println("Start at " + currentVertex.getCoordinates());
-                continue;
             }
-
-
-
-            if (i+1==path.size()) {
+            else if (i+1==path.size()) {
                 String direction = calculateDirection(prevVertex, currentVertex);
+                assert currentVertex != null;
                 System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
-            }
-            else if ( (prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(Objects.requireNonNull(nextVertex))) ||
-                    (prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(Objects.requireNonNull(nextVertex)))) {
             }
             else {
-                String direction = calculateDirection(prevVertex, currentVertex);
-                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
+                assert currentVertex != null;
+                if ( !(prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(Objects.requireNonNull(nextVertex))) &&
+                        !(prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(Objects.requireNonNull(nextVertex)))) {
+                    String direction = calculateDirection(prevVertex, currentVertex);
+                    System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
+                }
             }
+            prevVertex = currentVertex;
+            currentVertex = nextVertex;
         }
         System.out.println("Done!");
     }

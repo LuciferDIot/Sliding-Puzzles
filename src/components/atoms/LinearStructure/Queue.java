@@ -50,4 +50,6 @@ public class Queue<T> {
         } else
             return null; // If the queue is empty, return null
     }
+
+    public LinkedList<T> getQueue() {return this.queue;}
 }
