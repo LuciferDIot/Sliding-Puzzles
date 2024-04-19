@@ -37,17 +37,19 @@ public class Queue<T> {
         if (this.isEmpty())
             return null; // If the queue is empty, return null
         else
-            return this.queue.getHead().getData(); // Returns the data of the head node of the linked list
+            return this.queue.getHead().getData(); // Returns the data the head node of the linked list
     }
 
     // Method to remove and return the element at the front of the queue
     public T dequeue(){
-        if (!this.isEmpty()) { // If the queue is not empty
-            // Remove and store the data of the head node of the linked list
+        if (!this.isEmpty()) { // If the queue is not empty,
+            // Remove and store the data the head node of the linked list
             T dequeueVertex = this.queue.removeHead();
             this.size--; // Decrement the size of the queue
             return dequeueVertex; // Return the removed data
         } else
             return null; // If the queue is empty, return null
     }
+
+    public LinkedList<T> getQueue() {return this.queue;}
 }

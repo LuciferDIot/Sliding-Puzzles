@@ -8,7 +8,8 @@ import components.molecules.QueuePriority;
 
 public class GraphTraverser {
 
-    public static HashPriority aStarUnweightedGraph(Vertex startVertex, Vertex endVertex) {
+    public static HashPriority searchInGraph(Vertex startVertex, Vertex endVertex, boolean isAStar) {
+
         // Check if startVertex or endVertex is null
         if (startVertex == null || endVertex == null)
             return null; // Return null if either start or end vertex is null
@@ -37,23 +38,23 @@ public class GraphTraverser {
             // Check if the currentVertex vertex is the end vertex
             if (currentVertex.isSame(endVertex)) {
                 // If the end vertex is found, break out of the loop
-                System.out.println("Found end vertex");
+                System.out.println("\nFound end vertex\n");
                 break;
             }
 
+            System.out.print("Check neighbours on " + currentVertex.getCoordinates() +"\r");
             // Iterate through the edges of the currentVertex vertex
             for (Edge e : currentVertex.getEdges()) {
                 Vertex neighbor = e.getEnd();
 
                 // Update heuristic cost for the neighbor
-                int heuristicCost = estimateHeuristicCost(neighbor, endVertex);
+                int heuristicCost = isAStar?estimateHeuristicCost(neighbor, endVertex): 0;
 
                 // Check if the neighbor vertex is already visited
                 QueueObject closedVertex = closedList.contains(neighbor);
                 if (closedVertex == null) {
                     // If the neighbor is not visited, enqueue it and update its heuristic cost
                     neighbor.setHeuristicCost(actualCost);
-                    neighbor.setPrev(currentVertex);
                     QueueObject newQueueObj =closedList.enqueue(neighbor, currentVertex, actualCost + heuristicCost);
                     newQueueObj.setLevel(actualCost);
 
@@ -61,7 +62,9 @@ public class GraphTraverser {
                     if (!endVertex.isSame(neighbor)) {
                         openList.enqueue(neighbor, actualCost + heuristicCost);
                     } else {
-                        System.out.println("Found end vertex as a neighbor");
+
+                        if (!isAStar) openList.enqueue(neighbor, actualCost + heuristicCost);
+                        System.out.println("\nFound end vertex as a neighbor\n");
                     }
                 } else if (actualCost + heuristicCost < closedVertex.getPriority()) {
                     // Update the priority if the new level is lower

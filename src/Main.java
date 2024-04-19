@@ -1,31 +1,65 @@
 import components.atoms.Graph.Graph;
 import components.atoms.Graph.Vertex;
 import components.molecules.HashPriority;
-import components.molecules.QueueObject;
+import components.organisms.AssetExplorer;
 import components.organisms.GraphTraverser;
-import components.molecules.QueuePriority;
 import components.organisms.FileOperations;
 import components.organisms.PathHandler;
 
 import java.util.List;
-import java.util.Map;
+import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-//        Graph graph = FileOperations.parser("assets/benchmark/puzzle_2560.txt");
-        Graph graph = FileOperations.parser("assets/example/maze20_2.txt");
-        HashPriority closedList = GraphTraverser.aStarUnweightedGraph(graph.getStart(), graph.getEnd());
+        String assetsFolderPath = "assets";
+        Scanner scanner = new Scanner(System.in);
 
-//        closedList.print();
+        int loop = 0;
+        while (true) {
+            try {
+                if (loop > 0) {
+                    System.out.print("\n\n\n1. Yes \n2. No \nDo you want to continue? : ");
+                    int choice = scanner.nextInt();
+                    if (choice != 1) break;
+                }
 
-        List<Vertex> array = PathHandler.findShortestPath(closedList, graph.getStart(), graph.getEnd());
-//        if (array != null){
-//            for (Map.Entry<Vertex, QueueObject> v : closedList.getQueue().entrySet()) {
-//                QueueObject cu = v.getValue();
-//                cu.print();
-////                System.out.println(cu.getPriority()+"--> ("+ cu.getVertex().getX()+ ", " + cu.getVertex().getY() + ")");
-//            }
-//        }
-        PathHandler.printPath(array);
+                String returnFile = AssetExplorer.ExploreAssets(assetsFolderPath, scanner);
+
+                Graph graph = FileOperations.parser(returnFile);
+
+                if (graph == null) {
+                    System.out.println("Error: Unable to parse the file or invalid file format.");
+                    continue;
+                }
+
+
+                boolean isAStar = true;
+                System.out.print("\n\n\n1. Exact shortest path \n2. Quick way to end \nEnter the choice : ");
+                int choice = scanner.nextInt();
+                if (choice == 1) isAStar = false;
+
+                System.out.println("\n\n------------- Starting to find shortest path using " +
+                        (choice==1?"A*":"Dijkstra") + " -------------\n");
+                HashPriority closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), isAStar);
+
+                if (closedList == null) {
+                    System.out.println("Error: Failed to find a path.");
+                    continue;
+                }
+
+                List<Vertex> array = PathHandler.findShortestPath(closedList, graph.getStart(), graph.getEnd());
+
+                if (array != null) {
+                    PathHandler.printPath(array);
+                } else {
+                    System.out.println("No path found");
+                }
+
+                loop++;
+            } catch (Exception e) {
+                System.out.println("An error occurred: " + e.getMessage());
+            }
+        }
+        scanner.close();
     }
 }
