@@ -59,58 +59,48 @@ public class PathHandler {
 
     public static void printPath(List<Vertex> path) {
 
-//        if (path != null){
-//            for (Vertex v : path) {
-//                System.out.println("--> ("+ v.getX()+ ", " + v.getY() + ")");
-//            }
-//        }
-
         Vertex firstVertex = path.getFirst();
 
-        System.out.println("Start at "+ firstVertex.getCoordinates());
 
-        Vertex prevVertex=firstVertex;
-        String direction = "";
-        for (int i = 1; i < path.size(); i++) {
-            Vertex currVertex = path.get(i);
 
-            String newDirection = calculateDirection(currVertex, prevVertex);
-            System.out.println(newDirection+" :"+ " curr: "+currVertex.getCoordinates()+" Prev: "+prevVertex.getCoordinates());
 
-            if (!newDirection.equals(direction)) {
-                direction = newDirection;
-                System.out.println("Move "+direction+" to "+currVertex.getCoordinates());
+        for (int i = 0; i < path.size(); i++) {
+            Vertex currentVertex = path.get(i);
+            if (i==0) {
+                System.out.println("Start at "+ currentVertex.getCoordinates());
+                continue;
             }
 
-            if (i == path.size() - 1) {
-                System.out.println("End at "+ currVertex.getCoordinates());
+            if (i==path.size() - 1) {
+                System.out.println("End at "+ currentVertex.getCoordinates());
+                break;
             }
 
-            prevVertex = currVertex;
+            Vertex prevVertex = path.get(i-1);
+            Vertex nextVertex = path.get(i+1);
+
+            if (
+                    (prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(nextVertex)) ||
+                    (prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(nextVertex))) continue;
+            else {
+                String direction = calculateDirection(prevVertex, currentVertex);
+                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
+            }
+
         }
 
         System.out.println("Done!");
     }
 
-//    private static List<Vertex> removeDuplicateAxis(List<Vertex> path) {
-//
-//        int prevX, prevY;
-//        for (int i = 0; i < path.size() ; i++) {
-//            Vertex currVertex = path.get(i);
-//
-//
-//        }
-//    }
-
     private static String calculateDirection(Vertex start, Vertex end) {
         if (start.isSameRow(end)) {
-            if (start.isColumnHigher(end)) return "Right";
-            else return "Left";
+            if (start.isColumnHigher(end)) return "Left";
+            else return "Right";
         }
 
         if (start.isSameColumn(end)) {
-            if (start.isRowHigher(end)) return "Down";
-            else return "Up";
+            if (start.isRowHigher(end)) return "Up";
+            else return "Down";
         }
 
         return null;

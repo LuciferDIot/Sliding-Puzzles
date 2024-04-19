@@ -35,7 +35,8 @@ public class FileOperations {
             while ((line = reader.readLine()) != null) {
 
                 // Print the loading progress for each row
-                System.out.println("Loading line ..... " + rowId);
+                System.out.print("Loading line ..... " + rowId + "\r");
+
 
                 rowId++;
 
