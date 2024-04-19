@@ -6,6 +6,7 @@ import components.atoms.Graph.Vertex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PathHandler {
 
@@ -13,8 +14,8 @@ public class PathHandler {
      * Finds the shortest path from start to end vertex using a closed list (QueuePriority).
      *
      * @param closedList The closed list (QueuePriority) containing visited vertices.
-     * @param start The start vertex of the path.
-     * @param end The end vertex of the path.
+     * @param start      The start vertex of the path.
+     * @param end        The end vertex of the path.
      * @return The shortest path from start to end vertex, or null if closedList is empty or end vertex is not found.
      */
     public static List<Vertex> findShortestPath(HashPriority closedList, Vertex start, Vertex end) {
@@ -58,53 +59,41 @@ public class PathHandler {
 
 
     public static void printPath(List<Vertex> path) {
-
-        Vertex firstVertex = path.getFirst();
-
-
-
-
+        Vertex prevVertex = null, nextVertex = null;
         for (int i = 0; i < path.size(); i++) {
             Vertex currentVertex = path.get(i);
-            if (i==0) {
-                System.out.println("Start at "+ currentVertex.getCoordinates());
+            if (i!=0) prevVertex = path.get(i - 1);
+            if (i+1!=path.size()) nextVertex = path.get(i + 1);
+
+            if (i == 0) {
+                System.out.println("Start at " + currentVertex.getCoordinates());
                 continue;
             }
 
-            if (i==path.size() - 1) {
-                System.out.println("End at "+ currentVertex.getCoordinates());
-                break;
+
+
+            if (i+1==path.size()) {
+                String direction = calculateDirection(prevVertex, currentVertex);
+                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
             }
-
-            Vertex prevVertex = path.get(i-1);
-            Vertex nextVertex = path.get(i+1);
-
-            if (
-                    (prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(nextVertex)) ||
-                    (prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(nextVertex))) continue;
+            else if ( (prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(Objects.requireNonNull(nextVertex))) ||
+                    (prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(Objects.requireNonNull(nextVertex)))) {
+            }
             else {
                 String direction = calculateDirection(prevVertex, currentVertex);
                 System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
             }
-
         }
-
         System.out.println("Done!");
     }
 
     private static String calculateDirection(Vertex start, Vertex end) {
         if (start.isSameRow(end)) {
-            if (start.isColumnHigher(end)) return "Left";
-            else return "Right";
+            return start.isColumnHigher(end) ? "Right" : "Left";
         }
-
         if (start.isSameColumn(end)) {
-            if (start.isRowHigher(end)) return "Up";
-            else return "Down";
+            return start.isRowHigher(end) ? "Down" : "Up";
         }
-
-        return null;
+        return "Wrong";
     }
-
-
 }
