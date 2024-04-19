@@ -6,6 +6,7 @@ import components.atoms.Graph.Vertex;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class PathHandler {
 
@@ -13,8 +14,8 @@ public class PathHandler {
      * Finds the shortest path from start to end vertex using a closed list (QueuePriority).
      *
      * @param closedList The closed list (QueuePriority) containing visited vertices.
-     * @param start The start vertex of the path.
-     * @param end The end vertex of the path.
+     * @param start      The start vertex of the path.
+     * @param end        The end vertex of the path.
      * @return The shortest path from start to end vertex, or null if closedList is empty or end vertex is not found.
      */
     public static List<Vertex> findShortestPath(HashPriority closedList, Vertex start, Vertex end) {
@@ -58,63 +59,41 @@ public class PathHandler {
 
 
     public static void printPath(List<Vertex> path) {
+        Vertex prevVertex = null, nextVertex = null;
+        for (int i = 0; i < path.size(); i++) {
+            Vertex currentVertex = path.get(i);
+            if (i!=0) prevVertex = path.get(i - 1);
+            if (i+1!=path.size()) nextVertex = path.get(i + 1);
 
-//        if (path != null){
-//            for (Vertex v : path) {
-//                System.out.println("--> ("+ v.getX()+ ", " + v.getY() + ")");
-//            }
-//        }
-
-        Vertex firstVertex = path.getFirst();
-
-        System.out.println("Start at "+ firstVertex.getCoordinates());
-
-        Vertex prevVertex=firstVertex;
-        String direction = "";
-        for (int i = 1; i < path.size(); i++) {
-            Vertex currVertex = path.get(i);
-
-            String newDirection = calculateDirection(currVertex, prevVertex);
-            System.out.println(newDirection+" :"+ " curr: "+currVertex.getCoordinates()+" Prev: "+prevVertex.getCoordinates());
-
-            if (!newDirection.equals(direction)) {
-                direction = newDirection;
-                System.out.println("Move "+direction+" to "+currVertex.getCoordinates());
+            if (i == 0) {
+                System.out.println("Start at " + currentVertex.getCoordinates());
+                continue;
             }
 
-            if (i == path.size() - 1) {
-                System.out.println("End at "+ currVertex.getCoordinates());
-            }
 
-            prevVertex = currVertex;
+
+            if (i+1==path.size()) {
+                String direction = calculateDirection(prevVertex, currentVertex);
+                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
+            }
+            else if ( (prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(Objects.requireNonNull(nextVertex))) ||
+                    (prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(Objects.requireNonNull(nextVertex)))) {
+            }
+            else {
+                String direction = calculateDirection(prevVertex, currentVertex);
+                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
+            }
         }
-
         System.out.println("Done!");
     }
 
-//    private static List<Vertex> removeDuplicateAxis(List<Vertex> path) {
-//
-//        int prevX, prevY;
-//        for (int i = 0; i < path.size() ; i++) {
-//            Vertex currVertex = path.get(i);
-//
-//
-//        }
-//    }
-
     private static String calculateDirection(Vertex start, Vertex end) {
         if (start.isSameRow(end)) {
-            if (start.isColumnHigher(end)) return "Right";
-            else return "Left";
+            return start.isColumnHigher(end) ? "Right" : "Left";
         }
-
         if (start.isSameColumn(end)) {
-            if (start.isRowHigher(end)) return "Down";
-            else return "Up";
+            return start.isRowHigher(end) ? "Down" : "Up";
         }
-
-        return null;
+        return "Wrong";
     }
-
-
 }

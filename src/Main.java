@@ -12,8 +12,8 @@ import java.util.Map;
 
 public class Main {
     public static void main(String[] args) {
-        Graph graph = FileOperations.parser("assets/benchmark/puzzle_2560.txt");
-//        Graph graph = FileOperations.parser("assets/example/maze20_2.txt");
+//        Graph graph = FileOperations.parser("assets/benchmark/puzzle_2560.txt");
+        Graph graph = FileOperations.parser("assets/example/maze20_2.txt");
         HashPriority closedList = GraphTraverser.aStarUnweightedGraph(graph.getStart(), graph.getEnd());
 
 //        closedList.print();
