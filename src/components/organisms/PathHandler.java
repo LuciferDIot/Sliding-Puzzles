@@ -13,7 +13,7 @@ public class PathHandler {
         prevVertex = currentVertex;
 
         while (true) {
-            String direction = calculateDirection(prevVertex, currentVertex);
+            String direction = Vertex.getDirection(prevVertex, currentVertex);
 
             try {
                 nextVertex = path.pop();
@@ -30,15 +30,5 @@ public class PathHandler {
             prevVertex = currentVertex;
             currentVertex = nextVertex;
         }
-    }
-
-    private static String calculateDirection(Vertex start, Vertex end) {
-        if (start.isSameRow(end)) {
-            return start.isColumnHigher(end) ? "Right" : "Left";
-        }
-        if (start.isSameColumn(end)) {
-            return start.isRowHigher(end) ? "Down" : "Up";
-        }
-        return "Wrong";
     }
 }

@@ -56,6 +56,31 @@ public class Vertex {
         return "("+this.x+", "+this.y+")";
     }
 
+    public String getCoordinates() {
+        return "("+this.x+", "+this.y+")";
+    }
+
+
+    public boolean isSame(Vertex vertex) {
+        return this.getX()==vertex.getX() && this.getY()==vertex.getY();
+    }
+
+    public boolean isColumnHigher(Vertex end) {
+        return this.getX()<end.getX();
+    }
+
+    public boolean isRowHigher(Vertex end) {
+        return this.getY()<end.getY();
+    }
+
+    public boolean isSameRow(Vertex end) {
+        return this.getY() == end.getY();
+    }
+
+    public boolean isSameColumn(Vertex o) {
+        return this.x == o.getX();
+    }
+
     public void print(boolean showWeight) {
         StringBuilder message = new StringBuilder();
 
@@ -82,28 +107,13 @@ public class Vertex {
         System.out.println(message);
     }
 
-    public String getCoordinates() {
-        return "("+this.x+", "+this.y+")";
-    }
-
-
-    public boolean isSame(Vertex vertex) {
-        return this.getX()==vertex.getX() && this.getY()==vertex.getY();
-    }
-
-    public boolean isColumnHigher(Vertex end) {
-        return this.getX()<end.getX();
-    }
-
-    public boolean isRowHigher(Vertex end) {
-        return this.getY()<end.getY();
-    }
-
-    public boolean isSameRow(Vertex end) {
-        return this.getY() == end.getY();
-    }
-
-    public boolean isSameColumn(Vertex o) {
-        return this.x == o.getX();
+    public static String getDirection(Vertex start, Vertex end) {
+        if (start.isSameRow(end)) {
+            return start.isColumnHigher(end) ? "Right" : "Left";
+        }
+        if (start.isSameColumn(end)) {
+            return start.isRowHigher(end) ? "Down" : "Up";
+        }
+        return "Wrong";
     }
 }
