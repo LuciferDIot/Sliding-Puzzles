@@ -2,17 +2,16 @@ package components.organisms;
 
 import components.atoms.Graph.Edge;
 import components.atoms.Graph.Vertex;
+import components.atoms.LinearStructure.Stack;
 import components.molecules.HashPriority;
 import components.molecules.QueueObject;
 import components.molecules.QueuePriority;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 public class GraphTraverser {
 
-    public static List<Vertex> searchInGraph(Vertex startVertex, Vertex endVertex, boolean isAStar) {
+    public static Stack<Vertex> searchInGraph(Vertex startVertex, Vertex endVertex, boolean isAStar) {
 
         // Check if startVertex or endVertex is null
         if (startVertex == null || endVertex == null)
@@ -78,20 +77,19 @@ public class GraphTraverser {
             }
         }
 
-        List<Vertex> returnList = new ArrayList<>();
+        Stack<Vertex> returnList = new Stack<>();
 
         QueueObject prevQueueObj = closedList.getQueueObj(endVertex);
-        returnList.add(endVertex);
+        returnList.push(endVertex);
         while (true) {
-            returnList.add(prevQueueObj.getVertex());
-
+            returnList.push(prevQueueObj.getVertex());
 
             if (prevQueueObj.getVertex().isSame(startVertex)) break;
             prevQueueObj = closedList.getQueueObj(prevQueueObj.getPrev());
 
         }
 
-        return returnList.reversed();
+        return returnList;
     }
 
     // Method to estimate the heuristic cost (Manhattan distance) between two vertices
