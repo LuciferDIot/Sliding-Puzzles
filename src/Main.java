@@ -6,6 +6,7 @@ import components.organisms.GraphTraverser;
 import components.organisms.FileOperations;
 import components.organisms.PathHandler;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Scanner;
 
@@ -39,21 +40,15 @@ public class Main {
                 if (choice == 1) isAStar = false;
 
                 System.out.println("\n\n------------- Starting to find shortest path using " +
-                        (choice==1?"A*":"Dijkstra") + " -------------\n");
-                HashPriority closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), isAStar);
+                        (choice==1?"Dijkstra":"A*") + " -------------\n");
+                List<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), isAStar);
 
                 if (closedList == null) {
                     System.out.println("Error: Failed to find a path.");
                     continue;
                 }
 
-                List<Vertex> array = PathHandler.findShortestPath(closedList, graph.getStart(), graph.getEnd());
-
-                if (array != null) {
-                    PathHandler.printPath(array);
-                } else {
-                    System.out.println("No path found");
-                }
+                PathHandler.printPath(closedList);
 
                 loop++;
             } catch (Exception e) {
