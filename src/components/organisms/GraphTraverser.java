@@ -6,9 +6,13 @@ import components.molecules.HashPriority;
 import components.molecules.QueueObject;
 import components.molecules.QueuePriority;
 
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+
 public class GraphTraverser {
 
-    public static HashPriority searchInGraph(Vertex startVertex, Vertex endVertex, boolean isAStar) {
+    public static List<Vertex> searchInGraph(Vertex startVertex, Vertex endVertex, boolean isAStar) {
 
         // Check if startVertex or endVertex is null
         if (startVertex == null || endVertex == null)
@@ -63,7 +67,7 @@ public class GraphTraverser {
                         openList.enqueue(neighbor, actualCost + heuristicCost);
                     } else {
 
-                        if (!isAStar) openList.enqueue(neighbor, actualCost + heuristicCost);
+                        if (isAStar) openList.enqueue(neighbor, actualCost + heuristicCost);
                         System.out.println("\nFound end vertex as a neighbor\n");
                     }
                 } else if (actualCost + heuristicCost < closedVertex.getPriority()) {
@@ -74,7 +78,20 @@ public class GraphTraverser {
             }
         }
 
-        return closedList;
+        List<Vertex> returnList = new ArrayList<>();
+
+        QueueObject prevQueueObj = closedList.getQueueObj(endVertex);
+        returnList.add(endVertex);
+        while (true) {
+            returnList.add(prevQueueObj.getVertex());
+
+
+            if (prevQueueObj.getVertex().isSame(startVertex)) break;
+            prevQueueObj = closedList.getQueueObj(prevQueueObj.getPrev());
+
+        }
+
+        return returnList.reversed();
     }
 
     // Method to estimate the heuristic cost (Manhattan distance) between two vertices

@@ -33,12 +33,11 @@ public class FileOperations {
             String line;
             int rowId = 0;
             while ((line = reader.readLine()) != null) {
+                rowId++;
 
                 // Print the loading progress for each row
                 System.out.print("Loading line ..... " + rowId + "\r");
 
-
-                rowId++;
 
                 // Update the maximum row of the graph
                 if (rowId > graph.getMaxRow()) graph.setMaxRow(rowId);
@@ -60,8 +59,8 @@ public class FileOperations {
                         // Process the previous row to handle possible connections
                         if (!prevRow.isEmpty() && totalRowCol[1] == prevRow.size()) {
                             Vertex headVertex = prevRow.peek();
-                            if (headVertex.isColumnHigher(newVertex)) {
-                                while (headVertex.isColumnHigher(newVertex)) {
+                            if (headVertex.isColumnHigher(newVertex) && headVertex.getY()+1<newVertex.getY()) {
+                                while (headVertex.isColumnHigher(newVertex) && headVertex.getY()+1<newVertex.getY()) {
                                     if (prevRow.peek().getY() + 1 != headVertex.getY()) break;
                                     prevRow.dequeue();
                                 }
