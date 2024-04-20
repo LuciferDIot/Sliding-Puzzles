@@ -1,84 +1,44 @@
 package components.organisms;
 
-import components.molecules.HashPriority;
-import components.molecules.QueueObject;
+import components.atoms.LinearStructure.Stack;
 import components.atoms.Graph.Vertex;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.Objects;
 
 public class PathHandler {
 
-//    public static List<Vertex> findShortestPath(HashPriority closedList, Vertex start, Vertex end) {
-//
-//        // Check if the closedList is empty
-//        if (closedList.isEmpty()) return null; // Return null if the closedList is empty
-//
-//        // Initialize a list to store the shortest path
-//        List<Vertex> path = new ArrayList<>();
-//
-//        // Check if the end vertex exists in the closedList
-//        QueueObject endQueueObj = closedList.contains(end);
-//        if (endQueueObj == null)
-//            return null; // Return null if the end vertex is not found
-//        else {
-//            // Initialize a variable to store the previous QueueObject
-//            QueueObject prevQueueObj = endQueueObj;
-//
-//            // Flag to track if the shortest path is found
-//            boolean found = false;
-//            while (!found) {
-//                // Add the current vertex to the path
-//                if (!path.contains(prevQueueObj.getVertex())) path.add(prevQueueObj.getVertex());
-//                // Retrieve the QueueObject for the previous vertex
-//                QueueObject currQueueObj = closedList.contains(prevQueueObj.getPrev());
-//
-//                // Check if the previous vertex is the start vertex
-//                if (currQueueObj.getPrev().isSame(start)) {
-//                    // Add the current and previous vertices to the path and set found to true
-//                    if (!path.contains(currQueueObj.getVertex())) path.add(currQueueObj.getVertex());
-//                    if (!path.contains(currQueueObj.getPrev())) path.add(currQueueObj.getPrev());
-//                    found = true;
-//                }
-//
-//                // Update the previous QueueObject
-//                prevQueueObj = currQueueObj;
-//            }
-//        }
-//        // Reverse the path and return it
-//        return path.reversed();
-//    }
+    public static void printPath(Stack<Vertex> path) {
+        Vertex prevVertex, nextVertex, currentVertex;
 
+        currentVertex = path.pop();
+        System.out.println("Start at " + currentVertex.getCoordinates());
+        prevVertex = currentVertex;
 
-    public static void printPath(List<Vertex> path) {
-        Vertex prevVertex = null, nextVertex = null, currentVertex=null;
+        while (true) {
 
-        for (int i = 0; i < path.size(); i++) {
+            nextVertex = path.pop();
 
-            if (i+1!=path.size()) nextVertex = path.get(i + 1);
-
-            if (i == 0) {
-                currentVertex = path.get(i);
-                System.out.println("Start at " + currentVertex.getCoordinates());
-            }
-            else if (i+1==path.size()) {
+            if (path.isEmpty()) {
                 String direction = calculateDirection(prevVertex, currentVertex);
                 assert currentVertex != null;
                 System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
-            }
-            else {
+                break;
+            } else if (path.size()==1){
+                String direction = calculateDirection(prevVertex, currentVertex);
                 assert currentVertex != null;
+                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
+            } else {
                 if ( !(prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(Objects.requireNonNull(nextVertex))) &&
                         !(prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(Objects.requireNonNull(nextVertex)))) {
                     String direction = calculateDirection(prevVertex, currentVertex);
                     System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
                 }
             }
+
             prevVertex = currentVertex;
             currentVertex = nextVertex;
         }
+
         System.out.println("Done!");
     }
 
