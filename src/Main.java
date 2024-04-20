@@ -1,14 +1,11 @@
 import components.atoms.Graph.Graph;
 import components.atoms.Graph.Vertex;
 import components.atoms.LinearStructure.Stack;
-import components.molecules.HashPriority;
 import components.organisms.AssetExplorer;
 import components.organisms.GraphTraverser;
 import components.organisms.FileOperations;
 import components.organisms.PathHandler;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Scanner;
 
 public class Main {
@@ -25,7 +22,7 @@ public class Main {
                     if (choice != 1) break;
                 }
 
-                String returnFile = AssetExplorer.ExploreAssets(assetsFolderPath, scanner);
+                String returnFile = AssetExplorer.exploreAssets(assetsFolderPath, scanner);
 
                 Graph graph = FileOperations.parser(returnFile);
 
@@ -58,4 +55,21 @@ public class Main {
         }
         scanner.close();
     }
+
+//    public static void main(String[] args) {
+//        List<String> files = AssetExplorer.exploreAssets();
+//
+//        for (String file : files) {
+//            System.out.println("\n\n\n"+file);
+//            Graph graph = FileOperations.parser(file);
+//            System.out.println("\n\n Dijkstra");
+//            Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), false);
+//            PathHandler.printPath(closedList);
+//
+//            System.out.println("\n\n A*");
+//            closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), true);
+//            PathHandler.printPath(closedList);
+//        }
+//    }
+
 }
