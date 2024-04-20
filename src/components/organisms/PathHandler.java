@@ -3,8 +3,6 @@ package components.organisms;
 import components.atoms.LinearStructure.Stack;
 import components.atoms.Graph.Vertex;
 
-import java.util.Objects;
-
 public class PathHandler {
 
     public static void printPath(Stack<Vertex> path) {
@@ -15,31 +13,23 @@ public class PathHandler {
         prevVertex = currentVertex;
 
         while (true) {
+            String direction = calculateDirection(prevVertex, currentVertex);
 
-            nextVertex = path.pop();
-
-            if (path.isEmpty()) {
-                String direction = calculateDirection(prevVertex, currentVertex);
-                assert currentVertex != null;
-                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
-                break;
-            } else if (path.size()==1){
-                String direction = calculateDirection(prevVertex, currentVertex);
-                assert currentVertex != null;
-                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
-            } else {
-                if ( !(prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(Objects.requireNonNull(nextVertex))) &&
-                        !(prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(Objects.requireNonNull(nextVertex)))) {
-                    String direction = calculateDirection(prevVertex, currentVertex);
+            try {
+                nextVertex = path.pop();
+                if ( !(prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(nextVertex)) &&
+                        !(prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(nextVertex))) {
                     System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
                 }
+            } catch (IllegalStateException e){
+                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
+                System.out.println("Done!");
+                break;
             }
 
             prevVertex = currentVertex;
             currentVertex = nextVertex;
         }
-
-        System.out.println("Done!");
     }
 
     private static String calculateDirection(Vertex start, Vertex end) {

@@ -1,11 +1,12 @@
 package components.organisms;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class AssetExplorer {
 
-    public static String ExploreAssets(String path, Scanner scanner) {
+    public static String exploreAssets(String path, Scanner scanner) {
         System.out.println("\n");
 
         File folder = new File(path);
@@ -30,7 +31,7 @@ public class AssetExplorer {
             if (userInput > 0 && userInput <= files.length) {
                 File selectedFile = files[userInput - 1];
                 if (selectedFile.isDirectory()) {
-                    returnFile=ExploreAssets(selectedFile.getAbsolutePath(), scanner);
+                    returnFile= exploreAssets(selectedFile.getAbsolutePath(), scanner);
                 } else {
                     System.out.println("Selected file: " + selectedFile.getAbsolutePath() + "\n\n");
 
@@ -39,7 +40,7 @@ public class AssetExplorer {
             } else if (userInput == 0) {
                 String parentPath = folder.getParent();
                 if (parentPath != null) {
-                    returnFile=ExploreAssets(parentPath, scanner);
+                    returnFile= exploreAssets(parentPath, scanner);
                 } else {
                     System.out.println("You are already at the root folder.");
                 }
@@ -51,5 +52,26 @@ public class AssetExplorer {
         }
 
         return returnFile==null? null :(path+returnFile.split(path)[1]);
+    }
+
+    public static ArrayList<String> exploreAssets() {
+
+        String fileName = "assets\\example";
+
+        ArrayList<String> list = new ArrayList<>();
+        File[] files = new File(fileName).listFiles();
+
+        assert files != null;
+        for (File file : files) {
+            list.add(file.getAbsolutePath());
+        }
+
+        fileName = "assets\\benchmark";
+        files = new File(fileName).listFiles();
+        assert files != null;
+        for (File file : files) {
+            list.add(file.getAbsolutePath());
+        }
+        return list;
     }
 }

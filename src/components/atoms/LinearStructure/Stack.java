@@ -26,17 +26,17 @@ public class Stack<T> {
             throw new IllegalStateException("Stack is empty");
         }
         // Remove and return the last item from the ArrayList
-        return elements.remove(elements.size() - 1);
+        return elements.removeLast();
     }
 
     // Method to peek at the item on the top of the stack without removing it
     public T peek() {
         if (isEmpty()) {
             // If the stack is empty, throw an IllegalStateException
-            throw new IllegalStateException("Stack is empty");
+            throw new IllegalStateException();
         }
         // Return the last item from the ArrayList without removing it
-        return elements.get(elements.size() - 1);
+        return elements.getLast();
     }
 
     // Method to check if the stack is empty
