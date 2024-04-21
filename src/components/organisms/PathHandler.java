@@ -5,30 +5,16 @@ import components.atoms.LinearStructure.Stack;
 
 public class PathHandler {
 
-    public static void printPath(Stack<Vertex> path) {
-        Vertex prevVertex, nextVertex, currentVertex;
-
-        currentVertex = path.pop();
+    public static void printPathByStack(Stack<Vertex> path) {
+        Vertex currentVertex = path.pop(), prevVertex;
         System.out.println("Start at " + currentVertex.getCoordinates());
-        prevVertex = currentVertex;
 
-        while (true) {
+        while (!path.isEmpty()) {
+            prevVertex = path.pop();
             String direction = Vertex.getDirection(prevVertex, currentVertex);
+            System.out.println("Move " + direction + " to " + prevVertex.getCoordinates());
 
-            try {
-                nextVertex = path.pop();
-                if ( !(prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(nextVertex)) &&
-                        !(prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(nextVertex))) {
-                    System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
-                }
-            } catch (IllegalStateException e){
-                System.out.println("Move " + direction + " to " + currentVertex.getCoordinates());
-                System.out.println("Done!");
-                break;
-            }
-
-            prevVertex = currentVertex;
-            currentVertex = nextVertex;
+            currentVertex = prevVertex;
         }
     }
 

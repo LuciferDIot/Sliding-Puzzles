@@ -50,7 +50,7 @@ public class Main {
                     continue;
                 }
 
-                PathHandler.printPath(closedList);
+                PathHandler.printPathByStack(closedList);
 
                 long endTime = System.nanoTime();
                 long duration = (endTime - startTime) / 1000000; // Convert to milliseconds
@@ -73,11 +73,11 @@ public class Main {
 //            Graph graph = FileOperations.parser(file);
 //            System.out.println("\n\n Dijkstra");
 //            Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), false);
-//            PathHandler.printPath(closedList);
+//            PathHandler.printPathByStack(closedList);
 //
 //            System.out.println("\n\n A*");
 //            closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), true);
-//            PathHandler.printPath(closedList);
+//            PathHandler.printPathByStack(closedList);
 //        }
 //    }
 

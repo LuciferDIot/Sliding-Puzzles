@@ -78,15 +78,38 @@ public class GraphTraverser {
 
         Stack<Vertex> returnList = new Stack<>();
 
+
         QueueObject prevQueueObj = closedList.getQueueObj(endVertex);
-        returnList.push(endVertex);
+        Vertex prevVertex, currentVertex = prevQueueObj.getPrev(), nextVertex=prevQueueObj.getVertex();
+        returnList.push(nextVertex);
+
         while (true) {
-            returnList.push(prevQueueObj.getVertex());
+            QueueObject prevObj = closedList.getQueueObj(currentVertex);
+            prevVertex = prevObj.getPrev();
 
-            if (prevQueueObj.getVertex().isSame(startVertex)) break;
-            prevQueueObj = closedList.getQueueObj(prevQueueObj.getPrev());
+            if (prevVertex.isSame(startVertex)) {
+                returnList.push(prevVertex);
+                break;
+            }
 
+            if( !(prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(nextVertex)) &&
+                    !(prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(nextVertex))) {
+
+                returnList.push(currentVertex);
+            }
+
+            nextVertex = currentVertex;
+            currentVertex = prevVertex;
         }
+
+//        returnList.push(endVertex);
+//        while (true) {
+//            returnList.push(prevQueueObj.getVertex());
+//
+//            if (prevQueueObj.getVertex().isSame(startVertex)) break;
+//            prevQueueObj = closedList.getQueueObj(prevQueueObj.getPrev());
+//
+//        }
 
         return returnList;
     }
