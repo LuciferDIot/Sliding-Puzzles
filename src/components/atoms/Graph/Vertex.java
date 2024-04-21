@@ -5,102 +5,102 @@ import java.util.List;
 
 public class Vertex {
 
-    private final char label;
-    private final List<Edge> edges;
-    private final int x, y;
-    private int heuristicCost; // Heuristic cost from this vertex to the goal
+    private final char character;
+    private final List<Edge> edgeList;
+    private final int xAxis, yAxis;
+    private int totalCost; // Heuristic cost from this vertex to the goal
 
-    public Vertex(int x, int y, char label){
-        this.edges = new ArrayList<>();
-        this.x = x;
-        this.y = y;
-        this.heuristicCost = 0;
-        this.label = label;
+    public Vertex(int xAxis, int yAxis, char character){
+        this.edgeList = new ArrayList<>();
+        this.xAxis = xAxis;
+        this.yAxis = yAxis;
+        this.totalCost = 0;
+        this.character = character;
     }
 
     public void addEdge(Vertex endVertex, Integer weight){
         /* store created an edge object for the connection between endVertex and current vertex inside this edge list */
-        this.edges.add(new Edge(this, endVertex, weight));
+        this.edgeList.add(new Edge(this, endVertex, weight));
     }
 
     public void removeEdge(Vertex endVertex){
         /* remove connection between this and endVertex vertexes by removing edge from this edge list */
-        this.edges.removeIf(edge -> edge.getEnd().equals(endVertex));
+        this.edgeList.removeIf(edge -> edge.getEnd().equals(endVertex));
     }
 
-    public char getLabel() {
-        return label;
+    public char getCharacter() {
+        return character;
     }
 
-    public List<Edge> getEdges() {
-        return edges;
+    public List<Edge> getEdgeList() {
+        return edgeList;
     }
 
-    public int getX() {
-        return x;
+    public int getxAxis() {
+        return xAxis;
     }
 
-    public int getY() {
-        return y;
+    public int getyAxis() {
+        return yAxis;
     }
 
-    public int getHeuristicCost() {
-        return heuristicCost;
+    public int getTotalCost() {
+        return totalCost;
     }
 
-    public void setHeuristicCost(int heuristicCost) {
-        this.heuristicCost = heuristicCost;
+    public void setTotalCost(int totalCost) {
+        this.totalCost = totalCost;
     }
 
     public String getData(){
-        return "("+this.x+", "+this.y+")";
+        return "("+this.xAxis +", "+this.yAxis +")";
     }
 
     public String getCoordinates() {
-        return "("+this.x+", "+this.y+")";
+        return "("+this.xAxis +", "+this.yAxis +")";
     }
 
 
     public boolean isSame(Vertex vertex) {
-        return this.getX()==vertex.getX() && this.getY()==vertex.getY();
+        return this.getxAxis()==vertex.getxAxis() && this.getyAxis()==vertex.getyAxis();
     }
 
     public boolean isColumnHigher(Vertex end) {
-        return this.getX()<end.getX();
+        return this.getxAxis()<end.getxAxis();
     }
 
     public boolean isRowHigher(Vertex end) {
-        return this.getY()<end.getY();
+        return this.getyAxis()<end.getyAxis();
     }
 
     public boolean isSameRow(Vertex end) {
-        return this.getY() == end.getY();
+        return this.getyAxis() == end.getyAxis();
     }
 
     public boolean isSameColumn(Vertex o) {
-        return this.x == o.getX();
+        return this.xAxis == o.getxAxis();
     }
 
     public void print(boolean showWeight) {
         StringBuilder message = new StringBuilder();
 
-        if (this.edges.isEmpty()) {
+        if (this.edgeList.isEmpty()) {
             System.out.println(this.getData() + " -->");
             return;
         }
 
-        for(int i = 0; i < this.edges.size(); i++) {
+        for(int i = 0; i < this.edgeList.size(); i++) {
             if (i == 0) {
-                message.append(this.edges.get(i).getStart().getData()).append(" -->  ");
+                message.append(this.edgeList.get(i).getStart().getData()).append(" -->  ");
             }
 
-            message.append(this.edges.get(i).getEnd().getData());
+            message.append(this.edgeList.get(i).getEnd().getData());
 
             if (showWeight) {
-                message.append(" (").append(this.edges.get(i).getWeight()).append(")");
+                message.append(" (").append(this.edgeList.get(i).getWeight()).append(")");
             }
 
-            if (i != this.edges.size() - 1) {
+            if (i != this.edgeList.size() - 1) {
                 message.append(", ");
             }
         }

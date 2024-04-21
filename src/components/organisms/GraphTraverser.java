@@ -25,7 +25,7 @@ public class GraphTraverser {
         openList.enqueue(startVertex, 0);
 
         // Enqueue the start vertex into visited vertices with its heuristic cost
-        closedList.enqueue(startVertex, null, startVertex.getHeuristicCost());
+        closedList.enqueue(startVertex, null, startVertex.getTotalCost());
 
         // Iterate until the visit queue is empty
         while (!openList.isEmpty()) {
@@ -46,7 +46,7 @@ public class GraphTraverser {
             }
 
             // Iterate through the edges of the currentVertex vertex
-            for (Edge e : currentVertex.getEdges()) {
+            for (Edge e : currentVertex.getEdgeList()) {
                 Vertex neighbor = e.getEnd();
 
                 // Update heuristic cost for the neighbor
@@ -56,7 +56,7 @@ public class GraphTraverser {
                 QueueObject closedVertex = closedList.contains(neighbor);
                 if (closedVertex == null) {
                     // If the neighbor is not visited, enqueue it and update its heuristic cost
-                    neighbor.setHeuristicCost(actualCost);
+                    neighbor.setTotalCost(actualCost);
                     QueueObject newQueueObj =closedList.enqueue(neighbor, currentVertex, actualCost + heuristicCost);
                     newQueueObj.setLevel(actualCost);
 
@@ -116,8 +116,8 @@ public class GraphTraverser {
 
     // Method to estimate the heuristic cost (Manhattan distance) between two vertices
     private static int estimateHeuristicCost(Vertex vertex, Vertex goal) {
-        int dx = Math.abs(vertex.getX() - goal.getX());
-        int dy = Math.abs(vertex.getY() - goal.getY());
+        int dx = Math.abs(vertex.getxAxis() - goal.getxAxis());
+        int dy = Math.abs(vertex.getyAxis() - goal.getyAxis());
         return dx + dy;
     }
 }

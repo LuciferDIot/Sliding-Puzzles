@@ -14,7 +14,7 @@ public class QueuePriority {
     // Constructor for QueuePriority
     public QueuePriority() {
         // Initialize the priority queue
-        this.queue = new PriorityQueue<>(Comparator.comparingInt(Vertex::getHeuristicCost));
+        this.queue = new PriorityQueue<>(Comparator.comparingInt(Vertex::getTotalCost));
     }
 
     // Method to check if the queue is empty
@@ -26,7 +26,7 @@ public class QueuePriority {
     public void enqueue(Vertex vertex, int priority) {
         if (vertex != null) {
             // Add the vertex to the queue with its associated QueueObject
-            vertex.setHeuristicCost(priority);
+            vertex.setTotalCost(priority);
             queue.add(vertex);
         }
     }

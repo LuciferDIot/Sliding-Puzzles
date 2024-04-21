@@ -43,7 +43,7 @@ public class Main {
                         (choice==1?"Dijkstra":"A*") + " -------------\n");
 
                 long startTime = System.nanoTime();
-                Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), isAStar);
+                Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStartToFind(), graph.getSearchInGraph(), isAStar);
 
                 if (closedList == null) {
                     System.out.println("Error: Failed to find a path.");

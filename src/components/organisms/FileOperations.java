@@ -26,13 +26,13 @@ public class FileOperations {
             graph = new Graph(false, false);
             // Get the total number of rows and columns from the file
             int[] totalRowCol = getNumOfRowCol(fileName);
-            graph.setMaxRow(totalRowCol[0]);
-            graph.setMaxCol(totalRowCol[1]);
+            graph.setTotalRowCount(totalRowCol[0]);
+            graph.setTotalColCount(totalRowCol[1]);
 
             // Print the total number of rows, columns, and nodes
-            System.out.println("Total number of rows: " + graph.getMaxRow());
-            System.out.println("Total number of Cols: " + graph.getMaxCol());
-            System.out.println("Total number of Nodes: " + (graph.getMaxCol() * graph.getMaxRow()));
+            System.out.println("Total number of rows: " + graph.getTotalRowCount());
+            System.out.println("Total number of Cols: " + graph.getTotalColCount());
+            System.out.println("Total number of Nodes: " + (graph.getTotalColCount() * graph.getTotalRowCount()));
 
             // Initialize a queue to store vertices from the previous row
             Queue<Vertex> prevRow = new Queue<>();
@@ -43,16 +43,16 @@ public class FileOperations {
                 rowId++;
 
                 // Print the loading progress for each row
-                PathHandler.printLoadingBar(rowId, graph.getMaxRow());
+                PathHandler.printLoadingBar(rowId, graph.getTotalRowCount());
 
 
                 // Update the maximum row of the graph
-                if (rowId > graph.getMaxRow()) graph.setMaxRow(rowId);
+                if (rowId > graph.getTotalRowCount()) graph.setTotalRowCount(rowId);
 
                 Vertex prevVertex = null;
                 for (int colId = 1; colId < line.length() + 1; colId++) {
                     // Update the maximum column of the graph
-                    if (colId > graph.getMaxCol()) graph.setMaxCol(colId);
+                    if (colId > graph.getTotalColCount()) graph.setTotalColCount(colId);
 
                     char label = line.charAt(colId - 1);
 
@@ -64,22 +64,22 @@ public class FileOperations {
                         if (prevVertex != null) graph.addEdge(newVertex, prevVertex, null);
 
                         // Process the previous row to handle possible connections
-                        if (!prevRow.isEmpty() && graph.getMaxCol() == prevRow.size()) {
+                        if (!prevRow.isEmpty() && graph.getTotalColCount() == prevRow.size()) {
                             Vertex headVertex = prevRow.peek();
-                            if (headVertex.isColumnHigher(newVertex) && headVertex.getY()+1<newVertex.getY()) {
-                                while (headVertex.isColumnHigher(newVertex) && headVertex.getY()+1<newVertex.getY()) {
-                                    if (prevRow.peek().getY() + 1 != headVertex.getY()) break;
+                            if (headVertex.isColumnHigher(newVertex) && headVertex.getyAxis()+1<newVertex.getyAxis()) {
+                                while (headVertex.isColumnHigher(newVertex) && headVertex.getyAxis()+1<newVertex.getyAxis()) {
+                                    if (prevRow.peek().getyAxis() + 1 != headVertex.getyAxis()) break;
                                     prevRow.dequeue();
                                 }
                             } else if (headVertex.isSameColumn(newVertex)) {
                                 headVertex = prevRow.dequeue();
-                                if (headVertex.getLabel() != '0') graph.addEdge(headVertex, newVertex, null);
+                                if (headVertex.getCharacter() != '0') graph.addEdge(headVertex, newVertex, null);
                             }
                         }
 
                         // Set start and end vertices
-                        if (label == 'S') graph.setStart(newVertex);
-                        if (label == 'F') graph.setEnd(newVertex);
+                        if (label == 'S') graph.setStartToFind(newVertex);
+                        if (label == 'F') graph.setSearchInGraph(newVertex);
 
                         // Enqueue the current vertex to the previous row queue
                         prevRow.enqueue(newVertex);
@@ -87,7 +87,7 @@ public class FileOperations {
                     } else {
                         // Reset the previous vertex and dequeue from the previous row queue
                         prevVertex = null;
-                        if (!prevRow.isEmpty() && graph.getMaxCol() == prevRow.size()) prevRow.dequeue();
+                        if (!prevRow.isEmpty() && graph.getTotalColCount() == prevRow.size()) prevRow.dequeue();
                         prevRow.enqueue(new Vertex(colId, rowId, '0'));
                     }
                 }

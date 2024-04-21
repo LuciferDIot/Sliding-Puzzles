@@ -62,10 +62,10 @@ public class QueueObject implements Comparable<QueueObject> {
     public void print() {
         // Print the priority and coordinates of the vertex
         if (prev != null) {
-            System.out.println(this.priority + " :  (" + this.vertex.getX()+ ", " + this.vertex.getY() + ") "
-                    + "prev :  (" + this.prev.getX()+ ", " + this.prev.getY() + ")");
+            System.out.println(this.priority + " :  (" + this.vertex.getxAxis()+ ", " + this.vertex.getyAxis() + ") "
+                    + "prev :  (" + this.prev.getxAxis()+ ", " + this.prev.getyAxis() + ")");
         } else {
-            System.out.println(this.priority + " :  (" + this.vertex.getX()+ ", " + this.vertex.getY() + ") ");
+            System.out.println(this.priority + " :  (" + this.vertex.getxAxis()+ ", " + this.vertex.getyAxis() + ") ");
         }
     }
 }
