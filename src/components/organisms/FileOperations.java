@@ -1,16 +1,21 @@
 package components.organisms;
 
 import components.atoms.Graph.Graph;
-import components.atoms.LinearStructure.Queue;
 import components.atoms.Graph.Vertex;
+import components.atoms.LinearStructure.Queue;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 
 // Define a class for file operations related to parsing and extracting information from files
 public class FileOperations {
 
     // Method to parse a file and create a graph based on its contents
     public static Graph parser(String fileName) {
+
+        long startTime = System.nanoTime();
 
         Graph graph = null;
 
@@ -21,11 +26,13 @@ public class FileOperations {
             graph = new Graph(false, false);
             // Get the total number of rows and columns from the file
             int[] totalRowCol = getNumOfRowCol(fileName);
+            graph.setMaxRow(totalRowCol[0]);
+            graph.setMaxCol(totalRowCol[1]);
 
             // Print the total number of rows, columns, and nodes
-            System.out.println("Total number of rows: " + totalRowCol[0]);
-            System.out.println("Total number of Cols: " + totalRowCol[1]);
-            System.out.println("Total number of Nodes: " + (totalRowCol[1] * totalRowCol[0]));
+            System.out.println("Total number of rows: " + graph.getMaxRow());
+            System.out.println("Total number of Cols: " + graph.getMaxCol());
+            System.out.println("Total number of Nodes: " + (graph.getMaxCol() * graph.getMaxRow()));
 
             // Initialize a queue to store vertices from the previous row
             Queue<Vertex> prevRow = new Queue<>();
@@ -36,7 +43,7 @@ public class FileOperations {
                 rowId++;
 
                 // Print the loading progress for each row
-                System.out.print("Loading line ..... " + rowId + "\r");
+                PathHandler.printLoadingBar(rowId, graph.getMaxRow());
 
 
                 // Update the maximum row of the graph
@@ -57,7 +64,7 @@ public class FileOperations {
                         if (prevVertex != null) graph.addEdge(newVertex, prevVertex, null);
 
                         // Process the previous row to handle possible connections
-                        if (!prevRow.isEmpty() && totalRowCol[1] == prevRow.size()) {
+                        if (!prevRow.isEmpty() && graph.getMaxCol() == prevRow.size()) {
                             Vertex headVertex = prevRow.peek();
                             if (headVertex.isColumnHigher(newVertex) && headVertex.getY()+1<newVertex.getY()) {
                                 while (headVertex.isColumnHigher(newVertex) && headVertex.getY()+1<newVertex.getY()) {
@@ -80,11 +87,15 @@ public class FileOperations {
                     } else {
                         // Reset the previous vertex and dequeue from the previous row queue
                         prevVertex = null;
-                        if (!prevRow.isEmpty() && totalRowCol[1] == prevRow.size()) prevRow.dequeue();
+                        if (!prevRow.isEmpty() && graph.getMaxCol() == prevRow.size()) prevRow.dequeue();
                         prevRow.enqueue(new Vertex(colId, rowId, '0'));
                     }
                 }
             }
+
+            long endTime = System.nanoTime();
+            long duration = (endTime - startTime) / 1000000;
+            System.out.println("Total execution time: " + duration + " milliseconds");
 
             // Close the reader
             reader.close();

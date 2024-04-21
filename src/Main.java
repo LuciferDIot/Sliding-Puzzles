@@ -2,8 +2,8 @@ import components.atoms.Graph.Graph;
 import components.atoms.Graph.Vertex;
 import components.atoms.LinearStructure.Stack;
 import components.organisms.AssetExplorer;
-import components.organisms.GraphTraverser;
 import components.organisms.FileOperations;
+import components.organisms.GraphTraverser;
 import components.organisms.PathHandler;
 
 import java.util.Scanner;
@@ -24,6 +24,8 @@ public class Main {
 
                 String returnFile = AssetExplorer.exploreAssets(assetsFolderPath, scanner);
 
+                if (returnFile==null) break;
+
                 Graph graph = FileOperations.parser(returnFile);
 
                 if (graph == null) {
@@ -39,6 +41,8 @@ public class Main {
 
                 System.out.println("\n\n------------- Starting to find shortest path using " +
                         (choice==1?"Dijkstra":"A*") + " -------------\n");
+
+                long startTime = System.nanoTime();
                 Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), isAStar);
 
                 if (closedList == null) {
@@ -46,7 +50,12 @@ public class Main {
                     continue;
                 }
 
-                PathHandler.printPath(closedList);
+                PathHandler.printPathByStack(closedList);
+
+                long endTime = System.nanoTime();
+                long duration = (endTime - startTime) / 1000000; // Convert to milliseconds
+
+                System.out.println("Total execution time: " + duration + " milliseconds");
 
                 loop++;
             } catch (Exception e) {
@@ -64,11 +73,11 @@ public class Main {
 //            Graph graph = FileOperations.parser(file);
 //            System.out.println("\n\n Dijkstra");
 //            Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), false);
-//            PathHandler.printPath(closedList);
+//            PathHandler.printPathByStack(closedList);
 //
 //            System.out.println("\n\n A*");
 //            closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), true);
-//            PathHandler.printPath(closedList);
+//            PathHandler.printPathByStack(closedList);
 //        }
 //    }
 

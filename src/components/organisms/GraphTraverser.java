@@ -7,8 +7,6 @@ import components.molecules.HashPriority;
 import components.molecules.QueueObject;
 import components.molecules.QueuePriority;
 
-import java.util.List;
-
 public class GraphTraverser {
 
     public static Stack<Vertex> searchInGraph(Vertex startVertex, Vertex endVertex, boolean isAStar) {
@@ -17,6 +15,8 @@ public class GraphTraverser {
         if (startVertex == null || endVertex == null)
             return null; // Return null if either start or end vertex is null
 
+        System.out.println("Searching for path from " + startVertex.getCoordinates() +
+                " to " + endVertex.getCoordinates());
         // Initialize a queue to store visited vertices
         HashPriority closedList = new HashPriority();
         // Initialize a queue to store vertices to visit
@@ -45,7 +45,6 @@ public class GraphTraverser {
                 break;
             }
 
-            System.out.print("Check neighbours on " + currentVertex.getCoordinates() +"\r");
             // Iterate through the edges of the currentVertex vertex
             for (Edge e : currentVertex.getEdges()) {
                 Vertex neighbor = e.getEnd();
@@ -79,15 +78,38 @@ public class GraphTraverser {
 
         Stack<Vertex> returnList = new Stack<>();
 
+
         QueueObject prevQueueObj = closedList.getQueueObj(endVertex);
-        returnList.push(endVertex);
+        Vertex prevVertex, currentVertex = prevQueueObj.getPrev(), nextVertex=prevQueueObj.getVertex();
+        returnList.push(nextVertex);
+
         while (true) {
-            returnList.push(prevQueueObj.getVertex());
+            QueueObject prevObj = closedList.getQueueObj(currentVertex);
+            prevVertex = prevObj.getPrev();
 
-            if (prevQueueObj.getVertex().isSame(startVertex)) break;
-            prevQueueObj = closedList.getQueueObj(prevQueueObj.getPrev());
+            if (prevVertex.isSame(startVertex)) {
+                returnList.push(prevVertex);
+                break;
+            }
 
+            if( !(prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(nextVertex)) &&
+                    !(prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(nextVertex))) {
+
+                returnList.push(currentVertex);
+            }
+
+            nextVertex = currentVertex;
+            currentVertex = prevVertex;
         }
+
+//        returnList.push(endVertex);
+//        while (true) {
+//            returnList.push(prevQueueObj.getVertex());
+//
+//            if (prevQueueObj.getVertex().isSame(startVertex)) break;
+//            prevQueueObj = closedList.getQueueObj(prevQueueObj.getPrev());
+//
+//        }
 
         return returnList;
     }
