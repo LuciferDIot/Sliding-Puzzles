@@ -13,6 +13,55 @@ public class Graph {
         this.isWeighted = inputIsWeighted;
     }
 
+    public void setAdjacent(Vertex[][] chars, int xTotal, int yTotal) {
+        for (int xAxis = 0; xAxis < xTotal; xAxis++) {
+            for (int yAxis = 0; yAxis < yTotal; yAxis++) {
+                Vertex v = chars[xAxis][yAxis];
+                System.out.print(v.getCoordinates()+" \r");
+
+                if (v.getCharacter() == '0') {
+                    if (yAxis > 0) {
+                        Vertex up = chars[xAxis][yAxis - 1];
+                        if (up.getCharacter() != '0') {
+                            up.addUpEdge(chars);
+                            up.addLeftEdge(chars);
+                            up.addRightEdge(xTotal, chars);
+                        }
+                    }
+                    if (yAxis < yTotal - 1) {
+                        Vertex down = chars[xAxis][yAxis + 1];
+                        if (down.getCharacter() != '0') {
+                            down.addDownEdge(yTotal, chars);
+                            down.addLeftEdge(chars);
+                            down.addRightEdge(xTotal, chars);
+                        }
+                    }
+                    if (xAxis > 0) {
+                        Vertex left = chars[xAxis - 1][yAxis];
+                        if (left.getCharacter() != '0') {
+                            left.addLeftEdge(chars);
+                            left.addUpEdge(chars);
+                            left.addDownEdge(yTotal, chars);
+                        }
+                    }
+                    if (xAxis < xTotal - 1) {
+                        Vertex right = chars[xAxis + 1][yAxis];
+                        if (right.getCharacter() != '0') {
+                            right.addRightEdge(xTotal, chars);
+                            right.addUpEdge(chars);
+                            right.addDownEdge(yTotal, chars);
+                        }
+                    }
+                }else if ((yAxis==0 || yAxis==yTotal - 1 || xAxis==xTotal - 1 || xAxis==0) && v.getCharacter()!='0') {
+                    v.addUpEdge(chars);
+                    v.addRightEdge(xTotal, chars);
+                    v.addUpEdge(chars);
+                    v.addDownEdge(yTotal, chars);
+                }
+            }
+        }
+    }
+
 
     public int getTotalColCount() {
         return totalColCount;
@@ -79,5 +128,13 @@ public class Graph {
         // if this is an undirected graph,
         // remove edge between vertex1 and vertex2 by removing an edge object from vertex2
         if (!this.isDirected) vertex2.removeEdge(vertex1);
+    }
+
+    public void findMaximumSlidingPath(Vertex[][] chars) {
+        for (Vertex[] aChar : chars) {
+            for (Vertex v : aChar) {
+                v.removeLowDistanceEdges();
+            }
+        }
     }
 }
