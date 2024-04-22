@@ -163,8 +163,8 @@ public class Vertex {
 
                 Vertex upEdge = chars[this.getxIndex()][yIndex];
                 if (upEdge.getCharacter() != '0') {
-                    upEdge.addEdge(this, this.getyIndex() - upEdge.getyIndex());
-                    this.addEdge(upEdge, this.getxIndex() - y);
+                    upEdge.addEdge(this, Math.abs(this.getyIndex() - upEdge.getyIndex()));
+                    this.addEdge(upEdge, Math.abs(this.getyIndex() - upEdge.getyIndex()));
                     break;
                 }
             }
@@ -182,8 +182,8 @@ public class Vertex {
 
                 Vertex downEdge = chars[this.getxIndex()][yIndex];
                 if (downEdge.getCharacter() != '0') {
-                    downEdge.addEdge(this, downEdge.getyIndex() - this.getyIndex());
-                    this.addEdge(downEdge, y - this.getyIndex());
+                    downEdge.addEdge(this, Math.abs(this.getyIndex() - downEdge.getyIndex()));
+                    this.addEdge(downEdge, Math.abs(this.getyIndex() - downEdge.getyIndex()));
                     break;
                 }
             }
@@ -201,8 +201,8 @@ public class Vertex {
 
                 Vertex leftEdge = chars[xIndex][this.getyIndex()];
                 if (leftEdge.getCharacter() != '0') {
-                    leftEdge.addEdge(this, this.getxIndex() - leftEdge.getxIndex());
-                    this.addEdge(leftEdge, this.getxIndex() - x);
+                    leftEdge.addEdge(this, Math.abs(this.getxIndex() - leftEdge.getxIndex()));
+                    this.addEdge(leftEdge, Math.abs(this.getxIndex() - leftEdge.getxIndex()));
                     break;
                 }
             }
@@ -220,8 +220,8 @@ public class Vertex {
 
                 Vertex rightEdge = chars[xIndex][this.getyIndex()];
                 if (rightEdge.getCharacter() != '0') {
-                    rightEdge.addEdge(this, rightEdge.getxIndex() - this.getxIndex());
-                    this.addEdge(rightEdge, x - this.getxIndex());
+                    rightEdge.addEdge(this, Math.abs(this.getxIndex() - rightEdge.getxIndex()));
+                    this.addEdge(rightEdge, Math.abs(this.getxIndex() - rightEdge.getxIndex()));
                     break;
                 }
             }

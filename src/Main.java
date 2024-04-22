@@ -38,25 +38,26 @@ public class Main {
                 String returnFile = AssetExplorer.exploreAssets(assetsFolderPath, scanner);
 
                 if (returnFile==null) runAllAtOnce();
+                else {
+                    Graph graph = FileOperations.parser(returnFile);
 
-                Graph graph = FileOperations.parser(returnFile);
+                    System.out.println("\n\n------ Starting to find shortest path using A* -------");
 
-                System.out.println("\n\n------------- Starting to find shortest path using ");
+                    long startTime = System.nanoTime();
+                    Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStartToFind(), graph.getSearchInGraph());
 
-                long startTime = System.nanoTime();
-                Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStartToFind(), graph.getSearchInGraph());
+                    if (closedList == null) {
+                        System.out.println("Error: Failed to find a path.");
+                        continue;
+                    }
 
-                if (closedList == null) {
-                    System.out.println("Error: Failed to find a path.");
-                    continue;
+                    PathHandler.printPathByStack(closedList);
+
+                    long endTime = System.nanoTime();
+                    long duration = (endTime - startTime) / 1000000; // Convert to milliseconds
+
+                    System.out.println("Print path execution time: " + duration + " milliseconds");
                 }
-
-                PathHandler.printPathByStack(closedList);
-
-                long endTime = System.nanoTime();
-                long duration = (endTime - startTime) / 1000000; // Convert to milliseconds
-
-                System.out.println("Print path execution time: " + duration + " milliseconds");
 
                 loop++;
             } catch (Exception e) {
