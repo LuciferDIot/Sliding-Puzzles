@@ -1,8 +1,6 @@
 import components.atoms.Graph.Graph;
 import components.atoms.Graph.Vertex;
-import components.atoms.LinearStructure.Stack;
 import components.organisms.FileOperations;
-import components.organisms.PathHandler;
 import components.organisms.ShortPath;
 
 public class Main {
@@ -50,9 +48,9 @@ public class Main {
 //    }
 
     public static void main(String[] args) {
-        Graph graph = FileOperations.parser("assets/example/maze15_2.txt");
-        Stack<Vertex> v =ShortPath.findShortPath(graph.getStartToFind(), graph.getSearchInGraph());
-        PathHandler.printPathByStack(v);
+        Graph graph = FileOperations.parser("assets/example/maze10_1 - Copy.txt");
+        Vertex v =ShortPath.slideThroughDirect(graph.getStartToFind(), graph.getSearchInGraph(), true);
+        v.print(false);
     }
 
 }

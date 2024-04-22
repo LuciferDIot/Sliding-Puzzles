@@ -49,7 +49,7 @@ public class ShortPath {
         Vertex currentVertex = current, prevVertex = null;
         boolean endLoop = false;
         while (!endLoop) {
-            closedList.add(currentVertex); // Add currentVertex to closedList before processing neighbors
+            closedList.add(currentVertex);
             prevVertex = currentVertex;
             for (Edge e : currentVertex.getEdgeList()) {
                 Vertex neighbor = e.getEnd();
@@ -57,21 +57,19 @@ public class ShortPath {
                 if (closedList.contains(neighbor)) continue;
 
                 if (neighbor.isSame(end)) {
-                    returnVertex = neighbor;
                     endLoop = true;
                     break; // Exit the loop once the end vertex is found
                 } else if (neighbor.isSameRow(currentVertex) && isX) {
-                    returnVertex = currentVertex;
                     currentVertex = neighbor;
                     break; // Exit the loop after updating currentVertex
                 } else if (neighbor.isSameColumn(currentVertex) && !isX) {
-                    returnVertex = currentVertex;
                     currentVertex = neighbor;
                     break; // Exit the loop after updating currentVertex
                 }
             }
-            if (prevVertex.isSameRow(currentVertex)) endLoop = true; // Terminate the loop if the row remains the same
+            if (prevVertex.isSame(currentVertex)) endLoop = true; // Terminate the loop if the row remains the same
         }
+        returnVertex = currentVertex;
 
         return returnVertex;
     }
