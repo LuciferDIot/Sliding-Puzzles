@@ -2,21 +2,87 @@ package components.organisms;
 
 import components.atoms.Graph.Edge;
 import components.atoms.Graph.Vertex;
+import components.atoms.LinearStructure.Queue;
 import components.atoms.LinearStructure.Stack;
 import components.molecules.HashPriority;
 import components.molecules.QueueObject;
 import components.molecules.QueuePriority;
 
-public class GraphTraverser {
+import java.util.HashSet;
 
-    public static Stack<Vertex> searchInGraph(Vertex startVertex, Vertex endVertex, boolean isAStar) {
+public class ShortPath {
+
+
+    public static Stack<Vertex> findShortPath(Vertex start, Vertex end) {
+        Stack<Vertex> path = new Stack<>();
+
+        Queue<Vertex> lastQueue = null, currentQueue = null;
+        HashSet<Vertex> visited = new HashSet<>();
+        Vertex current = start;
+        Vertex lastCameVertex = null;
+        while (true) {
+
+            visited.add(current);
+            path.push(current);
+
+
+
+            current.print(false);
+            if (current.isSame(end)) break;
+            currentQueue = searchInGraph(current, end);
+
+            Vertex firstSlide = currentQueue.dequeue();
+            lastCameVertex = current;
+
+            current = slideThroughDirect(current, firstSlide, !firstSlide.isSameRow(current));
+            lastQueue = currentQueue;
+
+        }
+
+        return path;
+    }
+
+    public static Vertex slideThroughDirect(Vertex current, Vertex end, boolean isX) {
+        Vertex returnVertex = current;
+
+        HashSet<Vertex> closedList = new HashSet<>();
+        Vertex currentVertex = current, prevVertex = null;
+        boolean endLoop = false;
+        while (!endLoop) {
+            closedList.add(currentVertex); // Add currentVertex to closedList before processing neighbors
+            prevVertex = currentVertex;
+            for (Edge e : currentVertex.getEdgeList()) {
+                Vertex neighbor = e.getEnd();
+
+                if (closedList.contains(neighbor)) continue;
+
+                if (neighbor.isSame(end)) {
+                    returnVertex = neighbor;
+                    endLoop = true;
+                    break; // Exit the loop once the end vertex is found
+                } else if (neighbor.isSameRow(currentVertex) && isX) {
+                    returnVertex = currentVertex;
+                    currentVertex = neighbor;
+                    break; // Exit the loop after updating currentVertex
+                } else if (neighbor.isSameColumn(currentVertex) && !isX) {
+                    returnVertex = currentVertex;
+                    currentVertex = neighbor;
+                    break; // Exit the loop after updating currentVertex
+                }
+            }
+            if (prevVertex.isSameRow(currentVertex)) endLoop = true; // Terminate the loop if the row remains the same
+        }
+
+        return returnVertex;
+    }
+
+
+    public static Queue<Vertex> searchInGraph(Vertex startVertex, Vertex endVertex) {
 
         // Check if startVertex or endVertex is null
         if (startVertex == null || endVertex == null)
             return null; // Return null if either start or end vertex is null
 
-        System.out.println("Searching for path from " + startVertex.getCoordinates() +
-                " to " + endVertex.getCoordinates());
         // Initialize a queue to store visited vertices
         HashPriority closedList = new HashPriority();
         // Initialize a queue to store vertices to visit
@@ -32,16 +98,8 @@ public class GraphTraverser {
             // Dequeue the currentVertex vertex from the visit queue
             Vertex currentVertex = openList.dequeue();
 
-            // Retrieve the corresponding QueueObject from visited vertices
-            QueueObject currentQueueObj = closedList.getQueueObj(currentVertex);
-            // Update level (actual cost from start) using the priority of the currentVertex node
-            int level = currentQueueObj.getLevel();
-            int actualCost = level + 1;
-
             // Check if the currentVertex vertex is the end vertex
             if (currentVertex.isSame(endVertex)) {
-                // If the end vertex is found, break out of the loop
-                System.out.println("\nFound end vertex\n");
                 break;
             }
 
@@ -50,24 +108,23 @@ public class GraphTraverser {
                 Vertex neighbor = e.getEnd();
 
                 // Update heuristic cost for the neighbor
-                int heuristicCost = isAStar?estimateHeuristicCost(neighbor, endVertex): 0;
+                int heuristicCost = estimateHeuristicCost(neighbor, endVertex);
+                int actualCost = 1; // weight is 1;
+                int totalCost = actualCost + heuristicCost;
 
                 // Check if the neighbor vertex is already visited
                 QueueObject closedVertex = closedList.contains(neighbor);
                 if (closedVertex == null) {
                     // If the neighbor is not visited, enqueue it and update its heuristic cost
                     neighbor.setTotalCost(actualCost);
-                    QueueObject newQueueObj =closedList.enqueue(neighbor, currentVertex, actualCost + heuristicCost);
+                    QueueObject newQueueObj =closedList.enqueue(neighbor, currentVertex, totalCost);
                     newQueueObj.setLevel(actualCost);
 
                     // Enqueue the neighbor if it's not the end vertex
                     if (!endVertex.isSame(neighbor)) {
-                        openList.enqueue(neighbor, actualCost + heuristicCost);
-                    } else {
+                        openList.enqueue(neighbor, totalCost);
+                    } else openList.enqueue(neighbor, totalCost);
 
-                        if (isAStar) openList.enqueue(neighbor, actualCost + heuristicCost);
-                        System.out.println("\nFound end vertex as a neighbor\n");
-                    }
                 } else if (actualCost + heuristicCost < closedVertex.getPriority()) {
                     // Update the priority if the new level is lower
                     closedVertex.setPriority(actualCost);
@@ -76,40 +133,31 @@ public class GraphTraverser {
             }
         }
 
-        Stack<Vertex> returnList = new Stack<>();
+        Queue<Vertex> returnList = new Queue<>();
 
 
         QueueObject prevQueueObj = closedList.getQueueObj(endVertex);
         Vertex prevVertex, currentVertex = prevQueueObj.getPrev(), nextVertex=prevQueueObj.getVertex();
-        returnList.push(nextVertex);
+        returnList.enqueue(nextVertex);
 
         while (true) {
             QueueObject prevObj = closedList.getQueueObj(currentVertex);
             prevVertex = prevObj.getPrev();
 
             if (prevVertex.isSame(startVertex)) {
-                returnList.push(prevVertex);
+                returnList.enqueue(prevVertex);
                 break;
             }
 
             if( !(prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(nextVertex)) &&
                     !(prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(nextVertex))) {
 
-                returnList.push(currentVertex);
+                returnList.enqueue(currentVertex);
             }
 
             nextVertex = currentVertex;
             currentVertex = prevVertex;
         }
-
-//        returnList.push(endVertex);
-//        while (true) {
-//            returnList.push(prevQueueObj.getVertex());
-//
-//            if (prevQueueObj.getVertex().isSame(startVertex)) break;
-//            prevQueueObj = closedList.getQueueObj(prevQueueObj.getPrev());
-//
-//        }
 
         return returnList;
     }
@@ -120,4 +168,7 @@ public class GraphTraverser {
         int dy = Math.abs(vertex.getyAxis() - goal.getyAxis());
         return dx + dy;
     }
+
+
+
 }

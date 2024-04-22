@@ -81,6 +81,14 @@ public class Vertex {
         return this.xAxis == o.getxAxis();
     }
 
+    public boolean isDifferentColumn(Vertex end) {
+        return !this.isSameColumn(end);
+    }
+
+    public boolean isDifferentRow(Vertex end) {
+        return !this.isSameRow(end);
+    }
+
     public void print(boolean showWeight) {
         StringBuilder message = new StringBuilder();
 
