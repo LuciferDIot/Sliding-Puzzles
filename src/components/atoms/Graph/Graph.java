@@ -2,9 +2,9 @@ package components.atoms.Graph;
 
 public class Graph {
 
-    private Vertex start; // this will store the vertex which we have to start to find the F. this is S
-    private Vertex end; // this will store the vertex which we have to find the shortest path.
-    private int maxRow, maxCol; // this will store the row counts and column counts
+    private Vertex startToFind; // this will store the vertex which we have to start to find the F. this is S
+    private Vertex searchInGraph; // this will store the vertex which we have to find the shortest path.
+    private int totalRowCount, totalColCount; // this will store the row counts and column counts
     private final boolean isWeighted; // these will store whether the graph is weighted or directed
     private final boolean isDirected;
 
@@ -13,41 +13,90 @@ public class Graph {
         this.isWeighted = inputIsWeighted;
     }
 
+    public void setAdjacent(Vertex[][] chars, int xTotal, int yTotal) {
+        for (int xAxis = 0; xAxis < xTotal; xAxis++) {
+            for (int yAxis = 0; yAxis < yTotal; yAxis++) {
+                Vertex v = chars[xAxis][yAxis];
+                System.out.print(v.getCoordinates()+" \r");
 
-    public int getMaxCol() {
-        return maxCol;
+                if (v.getCharacter() == '0') {
+                    if (yAxis > 0) {
+                        Vertex up = chars[xAxis][yAxis - 1];
+                        if (up.getCharacter() != '0') {
+                            up.addUpEdge(chars);
+                            up.addLeftEdge(chars);
+                            up.addRightEdge(xTotal, chars);
+                        }
+                    }
+                    if (yAxis < yTotal - 1) {
+                        Vertex down = chars[xAxis][yAxis + 1];
+                        if (down.getCharacter() != '0') {
+                            down.addDownEdge(yTotal, chars);
+                            down.addLeftEdge(chars);
+                            down.addRightEdge(xTotal, chars);
+                        }
+                    }
+                    if (xAxis > 0) {
+                        Vertex left = chars[xAxis - 1][yAxis];
+                        if (left.getCharacter() != '0') {
+                            left.addLeftEdge(chars);
+                            left.addUpEdge(chars);
+                            left.addDownEdge(yTotal, chars);
+                        }
+                    }
+                    if (xAxis < xTotal - 1) {
+                        Vertex right = chars[xAxis + 1][yAxis];
+                        if (right.getCharacter() != '0') {
+                            right.addRightEdge(xTotal, chars);
+                            right.addUpEdge(chars);
+                            right.addDownEdge(yTotal, chars);
+                        }
+                    }
+                }else if ((yAxis==0 || yAxis==yTotal - 1 || xAxis==xTotal - 1 || xAxis==0) && v.getCharacter()!='0') {
+                    v.addUpEdge(chars);
+                    v.addRightEdge(xTotal, chars);
+                    v.addUpEdge(chars);
+                    v.addDownEdge(yTotal, chars);
+                }
+            }
+        }
     }
 
-    public void setMaxCol(int maxCol) {
-        this.maxCol = maxCol;
+
+    public int getTotalColCount() {
+        return totalColCount;
     }
 
-    public int getMaxRow() {
-        return maxRow;
+    public void setTotalColCount(int totalColCount) {
+        this.totalColCount = totalColCount;
     }
 
-    public void setMaxRow(int maxRow) {
-        this.maxRow = maxRow;
+    public int getTotalRowCount() {
+        return totalRowCount;
+    }
+
+    public void setTotalRowCount(int totalRowCount) {
+        this.totalRowCount = totalRowCount;
     }
 
     public Vertex addVertex(int x, int y, char label) {
         return new Vertex(x, y, label);
     }
 
-    public void setStart(Vertex vertex) {
-        this.start=vertex;
+    public void setStartToFind(Vertex vertex) {
+        this.startToFind =vertex;
     }
 
-    public void setEnd(Vertex vertex) {
-        this.end=vertex;
+    public void setSearchInGraph(Vertex vertex) {
+        this.searchInGraph =vertex;
     }
 
-    public Vertex getStart() {
-        return start;
+    public Vertex getStartToFind() {
+        return startToFind;
     }
 
-    public Vertex getEnd() {
-        return end;
+    public Vertex getSearchInGraph() {
+        return searchInGraph;
     }
 
     public void addEdge(Vertex vertex1, Vertex vertex2, Integer weight) {
@@ -79,5 +128,13 @@ public class Graph {
         // if this is an undirected graph,
         // remove edge between vertex1 and vertex2 by removing an edge object from vertex2
         if (!this.isDirected) vertex2.removeEdge(vertex1);
+    }
+
+    public void findMaximumSlidingPath(Vertex[][] chars) {
+        for (Vertex[] aChar : chars) {
+            for (Vertex v : aChar) {
+                v.removeLowDistanceEdges();
+            }
+        }
     }
 }

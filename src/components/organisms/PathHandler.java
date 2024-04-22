@@ -6,16 +6,20 @@ import components.atoms.LinearStructure.Stack;
 public class PathHandler {
 
     public static void printPathByStack(Stack<Vertex> path) {
+
+        int step = 0;
         Vertex currentVertex = path.pop(), prevVertex;
-        System.out.println("Start at " + currentVertex.getCoordinates());
+        System.out.println((++step) + ". Start at " + currentVertex.getCoordinates());
 
         while (!path.isEmpty()) {
             prevVertex = path.pop();
             String direction = Vertex.getDirection(prevVertex, currentVertex);
-            System.out.println("Move " + direction + " to " + prevVertex.getCoordinates());
+            System.out.println((++step) + ". Move " + direction + " to " + prevVertex.getCoordinates());
 
             currentVertex = prevVertex;
         }
+
+        System.out.println((++step) + ". End at " + currentVertex.getCoordinates());
     }
 
     public static void printLoadingBar(int rowId, int maxRow) {
