@@ -9,7 +9,7 @@ import components.molecules.QueuePriority;
 
 public class GraphTraverser {
 
-    public static Stack<Vertex> searchInGraph(Vertex startVertex, Vertex endVertex, boolean isAStar) {
+    public static Stack<Vertex> searchInGraph(Vertex startVertex, Vertex endVertex) {
 
         // Check if startVertex or endVertex is null
         if (startVertex == null || endVertex == null)
@@ -32,12 +32,6 @@ public class GraphTraverser {
             // Dequeue the currentVertex vertex from the visit queue
             Vertex currentVertex = openList.dequeue();
 
-            // Retrieve the corresponding QueueObject from visited vertices
-            QueueObject currentQueueObj = closedList.getQueueObj(currentVertex);
-            // Update level (actual cost from start) using the priority of the currentVertex node
-            int level = currentQueueObj.getLevel();
-            int actualCost = level + 1;
-
             // Check if the currentVertex vertex is the end vertex
             if (currentVertex.isSame(endVertex)) {
                 // If the end vertex is found, break out of the loop
@@ -45,79 +39,48 @@ public class GraphTraverser {
                 break;
             }
 
+            QueueObject currentQueueObj = closedList.getQueueObj(currentVertex);
+
             // Iterate through the edges of the currentVertex vertex
             for (Edge e : currentVertex.getEdgeList()) {
                 Vertex neighbor = e.getEnd();
 
                 // Update heuristic cost for the neighbor
-                int heuristicCost = isAStar?estimateHeuristicCost(neighbor, endVertex): 0;
+                int totalCost = (e.getWeight() + currentQueueObj.getTotalWeight()) + estimateHeuristicCost(neighbor, endVertex);
 
                 // Check if the neighbor vertex is already visited
-                QueueObject closedVertex = closedList.contains(neighbor);
-                if (closedVertex == null) {
-                    // If the neighbor is not visited, enqueue it and update its heuristic cost
-                    neighbor.setTotalCost(actualCost);
-                    QueueObject newQueueObj =closedList.enqueue(neighbor, currentVertex, actualCost + heuristicCost);
-                    newQueueObj.setLevel(actualCost);
+                QueueObject closedQueueObj = closedList.contains(neighbor);
+                if (closedQueueObj == null) {
+                    QueueObject newQueueObj = closedList.enqueue(neighbor, currentVertex, totalCost);
+                    newQueueObj.setTotalWeight(e.getWeight() + currentQueueObj.getTotalWeight());
+                    openList.enqueue(neighbor, totalCost);
 
-                    // Enqueue the neighbor if it's not the end vertex
-                    if (!endVertex.isSame(neighbor)) {
-                        openList.enqueue(neighbor, actualCost + heuristicCost);
-                    } else {
-
-                        if (isAStar) openList.enqueue(neighbor, actualCost + heuristicCost);
-                        System.out.println("\nFound end vertex as a neighbor\n");
-                    }
-                } else if (actualCost + heuristicCost < closedVertex.getPriority()) {
+                } else if (totalCost < closedQueueObj.getPriority()) {
                     // Update the priority if the new level is lower
-                    closedVertex.setPriority(actualCost);
-                    closedVertex.setPrev(currentVertex);
+                    closedQueueObj.setPriority(totalCost);
+                    closedQueueObj.setPrev(currentVertex);
+                    closedQueueObj.setTotalWeight(e.getWeight() + currentQueueObj.getTotalWeight());
                 }
             }
         }
 
         Stack<Vertex> returnList = new Stack<>();
-
-
-        QueueObject prevQueueObj = closedList.getQueueObj(endVertex);
-        Vertex prevVertex, currentVertex = prevQueueObj.getPrev(), nextVertex=prevQueueObj.getVertex();
-        returnList.push(nextVertex);
+        QueueObject currentQueueObj = closedList.getQueueObj(endVertex);
 
         while (true) {
-            QueueObject prevObj = closedList.getQueueObj(currentVertex);
-            prevVertex = prevObj.getPrev();
+            returnList.push(currentQueueObj.getVertex());
+            if (currentQueueObj.getVertex().isSame(startVertex)) break;
 
-            if (prevVertex.isSame(startVertex)) {
-                returnList.push(prevVertex);
-                break;
-            }
-
-            if( !(prevVertex.isSameRow(currentVertex) && currentVertex.isSameRow(nextVertex)) &&
-                    !(prevVertex.isSameColumn(currentVertex) && currentVertex.isSameColumn(nextVertex))) {
-
-                returnList.push(currentVertex);
-            }
-
-            nextVertex = currentVertex;
-            currentVertex = prevVertex;
+            currentQueueObj = closedList.getQueueObj(currentQueueObj.getPrev());
         }
-
-//        returnList.push(endVertex);
-//        while (true) {
-//            returnList.push(prevQueueObj.getVertex());
-//
-//            if (prevQueueObj.getVertex().isSame(startVertex)) break;
-//            prevQueueObj = closedList.getQueueObj(prevQueueObj.getPrev());
-//
-//        }
 
         return returnList;
     }
 
     // Method to estimate the heuristic cost (Manhattan distance) between two vertices
     private static int estimateHeuristicCost(Vertex vertex, Vertex goal) {
-        int dx = Math.abs(vertex.getxAxis() - goal.getxAxis());
-        int dy = Math.abs(vertex.getyAxis() - goal.getyAxis());
+        int dx = Math.abs(goal.getxAxis() - vertex.getxAxis());
+        int dy = Math.abs(goal.getyAxis() - vertex.getyAxis());
         return dx + dy;
     }
 }

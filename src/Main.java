@@ -6,9 +6,22 @@ import components.organisms.FileOperations;
 import components.organisms.GraphTraverser;
 import components.organisms.PathHandler;
 
+import java.util.List;
 import java.util.Scanner;
 
 public class Main {
+//    public static void main(String[] args) {
+//        String filename = "assets/benchmark/puzzle_20.txt";
+//        Graph graph = FileOperations.parser(filename);
+//        System.out.println("Total Col: "+graph.getTotalColCount()+ " Row: "+graph.getTotalRowCount());
+//
+//        graph.getStartToFind().print(true);
+//        graph.getSearchInGraph().print(true);
+//        Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStartToFind(), graph.getSearchInGraph());
+//        PathHandler.printPathByStack(closedList);
+//    }
+
+
     public static void main(String[] args) {
         String assetsFolderPath = "assets";
         Scanner scanner = new Scanner(System.in);
@@ -24,38 +37,27 @@ public class Main {
 
                 String returnFile = AssetExplorer.exploreAssets(assetsFolderPath, scanner);
 
-                if (returnFile==null) break;
+                if (returnFile==null) runAllAtOnce();
+                else {
+                    Graph graph = FileOperations.parser(returnFile);
 
-                Graph graph = FileOperations.parser(returnFile);
+                    System.out.println("\n\n------ Starting to find shortest path using A* -------");
 
-                if (graph == null) {
-                    System.out.println("Error: Unable to parse the file or invalid file format.");
-                    continue;
+                    long startTime = System.nanoTime();
+                    Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStartToFind(), graph.getSearchInGraph());
+
+                    if (closedList == null) {
+                        System.out.println("Error: Failed to find a path.");
+                        continue;
+                    }
+
+                    PathHandler.printPathByStack(closedList);
+
+                    long endTime = System.nanoTime();
+                    long duration = (endTime - startTime) / 1000000; // Convert to milliseconds
+
+                    System.out.println("Print path execution time: " + duration + " milliseconds");
                 }
-
-
-                boolean isAStar = true;
-                System.out.print("\n\n\n1. Exact shortest path \n2. Quick way to end \nEnter the choice : ");
-                int choice = scanner.nextInt();
-                if (choice == 1) isAStar = false;
-
-                System.out.println("\n\n------------- Starting to find shortest path using " +
-                        (choice==1?"Dijkstra":"A*") + " -------------\n");
-
-                long startTime = System.nanoTime();
-                Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStartToFind(), graph.getSearchInGraph(), isAStar);
-
-                if (closedList == null) {
-                    System.out.println("Error: Failed to find a path.");
-                    continue;
-                }
-
-                PathHandler.printPathByStack(closedList);
-
-                long endTime = System.nanoTime();
-                long duration = (endTime - startTime) / 1000000; // Convert to milliseconds
-
-                System.out.println("Total execution time: " + duration + " milliseconds");
 
                 loop++;
             } catch (Exception e) {
@@ -65,20 +67,17 @@ public class Main {
         scanner.close();
     }
 
-//    public static void main(String[] args) {
-//        List<String> files = AssetExplorer.exploreAssets();
-//
-//        for (String file : files) {
-//            System.out.println("\n\n\n"+file);
-//            Graph graph = FileOperations.parser(file);
-//            System.out.println("\n\n Dijkstra");
-//            Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), false);
-//            PathHandler.printPathByStack(closedList);
-//
-//            System.out.println("\n\n A*");
-//            closedList = GraphTraverser.searchInGraph(graph.getStart(), graph.getEnd(), true);
-//            PathHandler.printPathByStack(closedList);
-//        }
-//    }
+    public static void runAllAtOnce() {
+        List<String> files = AssetExplorer.exploreAssets();
+
+        for (String file : files) {
+            System.out.println("\n\n\n"+file);
+            Graph graph = FileOperations.parser(file);
+            graph.getStartToFind().print(true);
+            graph.getSearchInGraph().print(true);
+            Stack<Vertex> closedList = GraphTraverser.searchInGraph(graph.getStartToFind(), graph.getSearchInGraph());
+            PathHandler.printPathByStack(closedList);
+        }
+    }
 
 }

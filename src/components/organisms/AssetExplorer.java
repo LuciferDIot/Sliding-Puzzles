@@ -14,7 +14,9 @@ public class AssetExplorer {
         String returnFile = null;
 
         if (files != null && files.length > 0) {
-            int index = 1;
+            int index = 0;
+            System.out.println(index+ ". To Parent Folder");
+            index++;
             for (File file : files) {
                 if (file.isDirectory()) {
                     System.out.println(index + ". Folder: " + file.getName());
@@ -24,6 +26,7 @@ public class AssetExplorer {
                 index++;
             }
 
+            System.out.println(index+ ". Run all at once");
             System.out.print("Enter the number corresponding to the file or folder you want to explore: ");
             int userInput = scanner.nextInt();
             scanner.nextLine(); // Consume newline character
