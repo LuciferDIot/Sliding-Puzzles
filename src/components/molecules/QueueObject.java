@@ -9,7 +9,7 @@ public class QueueObject implements Comparable<QueueObject> {
     private final Vertex vertex; // Vertex associated with the QueueObject
     private int priority; // Priority of the QueueObject
     private Vertex prev; // Previous vertex in the path
-    private int level;
+    private int totalWeight;
 
     // Constructor for QueueObject
     public QueueObject(Vertex vertex, Vertex prev, int priority) {
@@ -19,12 +19,12 @@ public class QueueObject implements Comparable<QueueObject> {
         this.prev = prev;
     }
 
-    public int getLevel() {
-        return level;
+    public int getTotalWeight() {
+        return totalWeight;
     }
 
-    public void setLevel(int level) {
-        this.level = level;
+    public void setTotalWeight(int totalWeight) {
+        this.totalWeight = totalWeight;
     }
 
     // Method to get the previous vertex
