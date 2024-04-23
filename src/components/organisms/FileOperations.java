@@ -8,8 +8,24 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * A utility class for file operations related to parsing and extracting information from files.
+ * This utility class provides methods for file operations related to parsing and extracting information from files.
+ * It includes functionalities to parse a file and create a graph based on its contents.
+ * <p>
+ * Example usage:
+ * <pre>{@code
+ *     // Define the file name
+ *     String fileName = "map.txt";
+ *
+ *     // Parse the file and create a graph
+ *     Graph graph = FileOperations.parser(fileName);
+ * }</pre>
+ *
+ * @author  KWJP Geevinda
+ * @see     components.atoms.Graph.Graph
+ * @see     components.atoms.Graph.Vertex
+ * @since   1.0
  */
+
 public class FileOperations {
 
     /**

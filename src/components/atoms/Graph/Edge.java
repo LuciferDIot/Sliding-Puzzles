@@ -2,7 +2,30 @@ package components.atoms.Graph;
 
 /**
  * Represents an edge between two vertices in a graph.
+ * An edge connects two vertices and may have an associated weight.
+ * This class provides methods to retrieve the starting vertex,
+ * the ending vertex, and the weight of the edge.
+ * <p>
+ * Example usage:
+ * <pre>{@code
+ *     // Create vertices
+ *     Vertex startVertex = new Vertex(1, 1, 'S');
+ *     Vertex endVertex = new Vertex(2, 2, 'F');
+ *
+ *     // Create an edge between the vertices
+ *     Edge edge = new Edge(startVertex, endVertex, 5);
+ *
+ *     // Retrieve information about the edge
+ *     Vertex start = edge.getStart();
+ *     Vertex end = edge.getEnd();
+ *     int weight = edge.getWeight();
+ * }</pre>
+ *
+ * @author  KWJP Geevinda
+ * @see     components.atoms.Graph.Vertex
+ * @since   1.0
  */
+
 public class Edge {
 
     private final Vertex start; // The starting vertex of the edge

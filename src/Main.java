@@ -29,8 +29,40 @@ import java.util.List;
 import java.util.Scanner;
 
 /**
- * The main class responsible for running the application.
+ * This class represents a solution to the pathfinding problem described in the coursework.
+ * It finds the shortest path from the start to the finish on a map with obstacles.
+ * The player can only move in four cardinal directions until hitting an obstacle or the boundary.
+ * <p>
+ * Example usage:
+ * <pre>{@code
+ *     // Define the map
+ *     String map = ".....0...S\n" +
+ *                  "....0.....\n" +
+ *                  "0.....0..0\n" +
+ *                  "...0....0.\n" +
+ *                  ".F......0.\n" +
+ *                  ".0........\n" +
+ *                  ".......0..\n" +
+ *                  ".0.0..0..0\n" +
+ *                  "0.........\n" +
+ *                  ".00.....0.\n";
+ *
+ *     // Parse the map and find the shortest path
+ *     Graph graph = FileOperations.parser(map);
+ *     Stack<Vertex> path = GraphTraverser.searchInGraph(graph.getStartToFind(), graph.getSearchInGraph());
+ *
+ *     // Print the path
+ *     PathHandler.printPathByStack(path);
+ * }</pre>
+ *
+ * @author  KWJP Geevinda
+ * @see     components.organisms.AssetExplorer
+ * @see     components.organisms.FileOperations
+ * @see     components.organisms.GraphTraverser
+ * @see     components.organisms.PathHandler
+ * @since   1.0
  */
+
 public class Main {
 
     public static void main(String[] args) {

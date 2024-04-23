@@ -7,8 +7,41 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A priority queue implementation using a HashMap to store elements with priorities.
+ * This class represents a priority queue implementation using a HashMap to store elements with priorities.
+ * It allows enqueueing and dequeueing elements based on their priority.
+ * <p>
+ * Example usage:
+ * <pre>{@code
+ *     // Create a new HashPriority queue
+ *     HashPriority priorityQueue = new HashPriority();
+ *
+ *     // Enqueue vertices with their priorities
+ *     priorityQueue.enqueue(vertex1, prevVertex1, priority1);
+ *     priorityQueue.enqueue(vertex2, prevVertex2, priority2);
+ *
+ *     // Dequeue the vertex with the lowest priority
+ *     QueueObject dequeuedObject = priorityQueue.dequeue();
+ *
+ *     // Peek at the vertex with the lowest priority
+ *     QueueObject peekedObject = priorityQueue.peek();
+ *
+ *     // Check if the queue contains a specific vertex
+ *     QueueObject containsObject = priorityQueue.contains(vertex);
+ *
+ *     // Get the QueueObject associated with a specific vertex
+ *     QueueObject queueObject = priorityQueue.getQueueObj(vertex);
+ *
+ *     // Get the size of the queue
+ *     int size = priorityQueue.getSize();
+ *
+ *     // Print the contents of the queue
+ *     priorityQueue.print();
+ * }</pre>
+ *
+ * @author  KWJP Geevinda
+ * @since   1.0
  */
+
 public class HashPriority {
 
     // Private member variable for storing elements and their priorities

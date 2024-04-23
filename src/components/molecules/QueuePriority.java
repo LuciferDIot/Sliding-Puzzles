@@ -7,7 +7,14 @@ import java.util.PriorityQueue;
 
 /**
  * Manages a priority queue of vertices.
+ * The priority of vertices is determined by their total cost.
+ * This class provides methods for enqueueing, dequeue, and peeking at vertices based on priority.
+ *
+ * @author  KWJP Geevinda
+ * @see     components.atoms.Graph.Vertex
+ * @since   1.0
  */
+
 public class QueuePriority {
 
     // Private member variable for storing queue elements
