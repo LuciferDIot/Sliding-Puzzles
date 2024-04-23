@@ -8,8 +8,29 @@ import components.molecules.QueueObject;
 import components.molecules.QueuePriority;
 
 /**
- * A utility class for traversing graphs and finding paths between vertices.
+ * This class provides utility methods for traversing graphs and finding paths between vertices.
+ * It implements an algorithm to search for the shortest path between two vertices in a graph.
+ * <p>
+ * Example usage:
+ * <pre>{@code
+ *     // Define the graph
+ *     Graph graph = new Graph();
+ *     // Add vertices and edges to the graph
+ *     ...
+ *     // Define the start and end vertices
+ *     Vertex startVertex = ...
+ *     Vertex endVertex = ...
+ *     // Find the shortest path between the start and end vertices
+ *     Stack<Vertex> path = GraphTraverser.searchInGraph(startVertex, endVertex);
+ *     // Print the path
+ *     PathHandler.printPathByStack(path);
+ * }</pre>
+ *
+ * @author  KWJP Geevinda
+ * @see     components.organisms.PathHandler
+ * @since   1.0
  */
+
 public class GraphTraverser {
 
     /**

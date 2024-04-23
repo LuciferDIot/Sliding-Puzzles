@@ -2,7 +2,42 @@ package components.atoms.Graph;
 
 /**
  * Represents a graph composed of vertices and edges.
+ * This class provides methods to manipulate and analyze the graph.
+ * It includes functionality for setting adjacent vertices, finding maximum sliding paths,
+ * and managing start and finish vertices.
+ *
+ * Example usage:
+ * <pre>{@code
+ *     // Create a new graph instance
+ *     Graph graph = new Graph();
+ *
+ *     // Define the dimensions of the graph
+ *     int totalRows = 10;
+ *     int totalColumns = 10;
+ *
+ *     // Create a 2D array of vertices representing the graph
+ *     Vertex[][] vertices = new Vertex[totalRows][totalColumns];
+ *
+ *     // Initialize the vertices and add them to the graph
+ *     for (int i = 0; i < totalRows; i++) {
+ *         for (int j = 0; j < totalColumns; j++) {
+ *             char label = ...; // Initialize the label for each vertex
+ *             vertices[i][j] = graph.addVertex(i, j, label);
+ *         }
+ *     }
+ *
+ *     // Set adjacent vertices for each vertex in the graph
+ *     graph.setAdjacent(vertices, totalColumns, totalRows);
+ *
+ *     // Find the maximum sliding path in the graph
+ *     graph.findMaximumSlidingPath(vertices);
+ * }</pre>
+ *
+ * @author  KWJP Geevinda
+ * @see     components.atoms.Graph.Vertex
+ * @since   1.0
  */
+
 public class Graph {
 
     private Vertex startToFind; // The starting vertex from which to find the destination (S)

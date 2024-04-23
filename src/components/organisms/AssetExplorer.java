@@ -6,7 +6,29 @@ import java.util.Scanner;
 
 /**
  * A utility class for exploring assets in a file system.
+ * It provides methods to navigate through directories and select files.
+ *
+ * <p>Example usage:
+ * <pre>{@code
+ *     // Explore assets in a specific directory
+ *     Scanner scanner = new Scanner(System.in);
+ *     String path = "assets";
+ *     String selectedFile = AssetExplorer.exploreAssets(path, scanner);
+ *     if (selectedFile != null) {
+ *         System.out.println("Selected file: " + selectedFile);
+ *     }
+ *
+ *     // Explore assets in default directories
+ *     ArrayList<String> allAssets = AssetExplorer.exploreAssets();
+ *     for (String asset : allAssets) {
+ *         System.out.println("Found asset: " + asset);
+ *     }
+ * }</pre>
+ *
+ * @author  KWJP Geevinda
+ * @since   1.0
  */
+
 public class AssetExplorer {
 
     /**

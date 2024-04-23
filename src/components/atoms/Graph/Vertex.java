@@ -6,7 +6,13 @@ import java.util.List;
 
 /**
  * Represents a vertex in a graph.
+ * This class provides functionality to create and manipulate vertices in a graph,
+ * including adding and removing edges, calculating direction, and printing vertex information.
+ *
+ * @author  KWJP Geevinda
+ * @since   1.0
  */
+
 public class Vertex {
 
     private final char character;

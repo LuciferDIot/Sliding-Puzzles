@@ -4,8 +4,29 @@ import components.atoms.Graph.Vertex;
 import components.atoms.LinearStructure.Stack;
 
 /**
- * A utility class for handling paths and printing loading bars.
+ * This class provides utility methods for handling paths and printing loading bars.
+ * It includes methods for printing paths represented by stacks of vertices and for printing loading bars.
+ * <p>
+ * Example usage:
+ * <pre>{@code
+ *     // Create a stack representing the path
+ *     Stack<Vertex> path = new Stack<>();
+ *     path.push(new Vertex(0, 0)); // Add vertices representing the path
+ *     path.push(new Vertex(1, 0));
+ *     path.push(new Vertex(2, 0));
+ *     // Print the path
+ *     PathHandler.printPathByStack(path);
+ *
+ *     // Print a loading bar
+ *     PathHandler.printLoadingBar(50, 100); // Prints "Loading |#####     |"
+ * }</pre>
+ *
+ * @author  KWJP Geevinda
+ * @see     components.atoms.Graph.Vertex
+ * @see     components.atoms.LinearStructure.Stack
+ * @since   1.0
  */
+
 public class PathHandler {
 
     /**

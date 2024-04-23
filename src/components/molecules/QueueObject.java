@@ -5,7 +5,14 @@ import components.atoms.Graph.Vertex;
 /**
  * Represents an object in a priority queue.
  * Implements the Comparable interface to compare objects based on priority.
+ * This class is used in priority queues for pathfinding algorithms.
+ *
+ * @author  KWJP Geevinda
+ * @see     components.molecules.HashPriority
+ * @see     components.molecules.QueuePriority
+ * @since   1.0
  */
+
 public class QueueObject implements Comparable<QueueObject> {
 
     private final Vertex vertex; // Vertex associated with the QueueObject
