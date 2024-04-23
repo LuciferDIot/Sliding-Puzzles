@@ -2,6 +2,10 @@
 
 This project implements a path finding algorithm to solve a type of puzzle commonly found in video games. The puzzle involves navigating a character from a starting point to a goal while avoiding obstacles and sliding on frictionless ice. The project consists of several components:
 
+## Github link
+
+https://github.com/LuciferDIot/Sliding-puzzles.git
+
 ## Overview
 
 The main components of the project are:
@@ -53,9 +57,10 @@ To use the path finding puzzle solver:
 3. Run the Main class to start the application.
 4. Follow the on-screen prompts to select a puzzle configuration file and view the results.
 
-## Contributors
+## Contributor
 
 - KWJP Geevinda (IIT id: 20212016, Westminster id: w1871471)
+- GitHub - https://github.com/LuciferDIot
 
 
 ## Description: Sliding puzzles** 
