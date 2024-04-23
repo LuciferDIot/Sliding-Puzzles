@@ -45,7 +45,7 @@ public class Main {
                 // Check if this is not the first iteration and prompt user for continuation
                 if (loop > 0) {
                     System.out.print("\n\n\n1. Yes \n2. No \nDo you want to continue? : ");
-                    int choice = scanner.nextInt();
+                    int choice = Integer.parseInt(scanner.nextLine());
                     if (choice != 1) break; // Exit the loop if user chooses to stop
                 }
 
