@@ -12,7 +12,7 @@
  *
  * License: MIT License
  *
- * GitHub: https://github.com/LuciferDIot/Puzzle.git
+ * GitHub: https://github.com/LuciferDIot/Sliding-puzzles.git
  */
 
 
