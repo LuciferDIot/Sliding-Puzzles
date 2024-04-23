@@ -1,73 +1,111 @@
-**Coursework Description: Sliding puzzles** 
+# Path Finding Puzzle Solver
+
+This project implements a path finding algorithm to solve a type of puzzle commonly found in video games. The puzzle involves navigating a character from a starting point to a goal while avoiding obstacles and sliding on frictionless ice. The project consists of several components:
+
+## Overview
+
+The main components of the project are:
+
+1. **Vertex**: Represents a vertex in a graph. Each vertex corresponds to a position on the puzzle grid and is connected to adjacent vertices by edges. Vertices can be obstacles ('0'), starting points ('S'), goals ('F'), or empty spaces ('.').
+
+2. **Edge**: Represents an edge between two vertices in a graph. Each edge has a weight representing the cost of traversing from one vertex to another.
+
+3. **Graph**: Represents a graph consisting of vertices and edges. It provides methods for adding vertices, adding edges between vertices, and finding the shortest path between two vertices using the A* algorithm.
+
+4. **AssetExplorer**: Handles exploration of asset files containing puzzle configurations. It scans a directory for asset files, allowing users to select a specific file for processing.
+
+5. **FileOperations**: Provides functionality for parsing asset files to create graph representations of puzzle configurations.
+
+6. **GraphTraverser**: Implements the A* algorithm to traverse the graph and find the shortest path between a start vertex and a goal vertex.
+
+7. **PathHandler**: Contains utility methods for printing paths and loading bars during path finding.
+
+8. **Main**: The main class that orchestrates the execution of the path finding algorithm. It interacts with the user to select puzzle configurations, processes asset files, and displays the results.
+
+## Tasks
+
+The project is divided into several tasks, each corresponding to a specific component or functionality:
+
+1. **Set up the Project**: Create a Java project and configure the necessary dependencies.
+
+2. **Implement Vertex Class**: Create a class to represent vertices in the graph. Include methods for adding and removing edges, calculating direction, and printing vertex information.
+
+3. **Implement Edge Class**: Define a class to represent edges between vertices. Include methods to set and get edge weights.
+
+4. **Implement Graph Class**: Develop a class to represent graphs composed of vertices and edges. Implement methods for adding vertices and edges, as well as finding the shortest path using the A* algorithm.
+
+5. **Implement AssetExplorer Class**: Implement a class to explore asset files containing puzzle configurations. Include methods to scan directories for asset files and prompt users for selection.
+
+6. **Implement FileOperations Class**: Create a class to parse asset files and generate graph representations of puzzle configurations. Implement methods to read files, extract puzzle data, and create graph structures.
+
+7. **Implement GraphTraverser Class**: Implement the A* algorithm to traverse the graph and find the shortest path between a start and a goal vertex.
+
+8. **Implement PathHandler Class**: Develop utility methods for printing paths and loading bars during path finding.
+
+9. **Implement Main Class**: Create the main class to orchestrate the execution of the path finding algorithm. Implement user interaction, asset file processing, and result display.
+
+## Usage
+
+To use the path finding puzzle solver:
+
+1. Clone the repository to your local machine.
+2. Compile the Java source files.
+3. Run the Main class to start the application.
+4. Follow the on-screen prompts to select a puzzle configuration file and view the results.
+
+## Contributors
+
+- KWJP Geevinda (IIT id: 20212016, Westminster id: w1871471)
+
+
+## Description: Sliding puzzles** 
 
 In this coursework, you are supposed to use path finding to solve a type of puzzle that occurs in many video games. The basic version that we will be dealing with is this:  
-
-.....0...S 
-
-....0..... 
-
-0.....0..0 
-
-...0....0. 
-
-.F......0. 
-
-.0........ 
-
-.......0.. 
-
-.0.0..0..0 
-
-0......... 
-
-.00.....0. 
+<pre>
+  .....0...S
+  ....0.....
+  0.....0..0
+  ...0....0.
+  .F......0.
+  .0........
+  .......0..
+  .0.0..0..0
+  0.........
+  .00.....0.
+</pre>
 
 
 The player starts at the location labelled “S” and wants to reach the finish, labelled “F”. Each turn they choose one of the four cardinal directions to move. However, except for S and F the floor is covered in frictionless ice, so they will keep sliding in the chosen direction until they hit the wall surrounding the area, or one of the rocks (labelled “0”). For example, starting in the map given above: 
-
-.....0...@
-
-....0..... 
-
-0.....0..0 
-
-...0....0. 
-
-.F......0. 
-
-.0........ 
-
-.......0.. 
-
-.0.0..0..0 
-
-0......... 
-
-.00.....0. 
+<pre>
+  .....0...@
+  ....0.....
+  0.....0..0
+  ...0....0.
+  .F......0.
+  .0........
+  .......0..
+  .0.0..0..0
+  0.........
+  .00.....0.
+</pre>
 
 the player (“@”) moving left would end up here: .....0@..S 
-
-....0..... 
-
-0.....0..0 
-
-...0....0. 
-
-.F......0. 
-
-.0........ 
-
-.......0.. 
-
-.0.0..0..0 
-
-0......... 
-
-.00.....0. 
+<pre>
+  ....0.....
+  0.....0..0
+  ...0....0.
+  .F......0.
+  .0........
+  .......0..
+  .0.0..0..0
+  0.........
+  .00.....0.
+</pre>
 
 
-So we are dealing with the problem of finding a path from S to F, but the reachability relation between points is not the usual one.  
-### Tasks to be performed: 
+So we are dealing with the problem of finding a path from S to F, but the reachability relation between points is not the usual one.  <br />
+
+## Tasks to be performed: 
 **Task 1 (10 marks).** Set up a project (Java or C++) as you did for the tutorial exercises.  
 
 **Task 2 (20 marks).** Choose and implement a data structure which can represent maps such as the one in the example. It must provide the necessary infrastructure for finding a shortest path from the start to the finish.  
@@ -104,7 +142,9 @@ Where the squares are numbered left to right, top to bottom.
 1) A short explanation of your choice of data structure and algorithm.
 1) A run of your algorithm on a small benchmark example. This should include the supporting information as described in Task 4.
 1) A performance analysis of your algorithmic design and implementation. This can be based either on an empirical study, e.g., doubling hypothesis, or on purely theoretical considerations, as discussed in the lectures and tutorials. It should include a suggested order-of-growth classification (Big-O notation).
-### To be submitted: 
+
+
+## To be submitted: 
 - Your zipped source code (for Tasks 1 to 4) in Java or C++. Your source code shall include header comments with your student ID and name.
 - The report about the algorithmic performance analysis (Task 5).
 
