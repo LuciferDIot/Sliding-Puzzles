@@ -58,15 +58,16 @@ public class GraphTraverser {
         // Enqueue the start vertex into visited vertices with its heuristic cost
         closedList.enqueue(startVertex, null, startVertex.getTotalCost());
 
+        boolean foundEndVertexAsNeighbour = false;
         // Iterate until the visit queue is empty
         while (!openList.isEmpty()) {
             // Dequeue the currentVertex vertex from the visit queue
             Vertex currentVertex = openList.dequeue();
 
             // Check if the currentVertex vertex is the end vertex
-            if (currentVertex.isSame(endVertex)) {
+            if (currentVertex.isSame(endVertex) || foundEndVertexAsNeighbour) {
                 // If the end vertex is found, break out of the loop
-                System.out.println("\nFound end vertex\n");
+                if (!foundEndVertexAsNeighbour) System.out.println("\nFound end vertex\n");
                 break;
             }
 
@@ -85,6 +86,15 @@ public class GraphTraverser {
                     QueueObject newQueueObj = closedList.enqueue(neighbor, currentVertex, totalCost);
                     newQueueObj.setTotalWeight(e.getWeight() + currentQueueObj.getTotalWeight());
                     openList.enqueue(neighbor, totalCost);
+
+
+                    // Check if the currentVertex vertex is the end vertex
+                    if (neighbor.isSame(endVertex)) {
+                        // If the end vertex is found, break out of the loop
+                        System.out.println("\nFound end vertex as a neighbour\n");
+                        foundEndVertexAsNeighbour=true;
+                        break;
+                    }
 
                 } else if (totalCost < closedQueueObj.getPriority()) {
                     // Update the priority if the new level is lower
