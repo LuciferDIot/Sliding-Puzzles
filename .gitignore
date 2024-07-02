@@ -1,29 +1,48 @@
 ### IntelliJ IDEA ###
-out/
-!**/src/main/**/out/
-!**/src/test/**/out/
+Method_1/out/
+Method_2/out/
+!Method_1/**/src/main/**/out/
+!Method_2/**/src/main/**/out/
+!Method_1/**/src/test/**/out/
+!Method_2/**/src/test/**/out/
 
 ### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-bin/
-!**/src/main/**/bin/
-!**/src/test/**/bin/
+Method_1/.apt_generated
+Method_2/.apt_generated
+Method_1/.classpath
+Method_2/.classpath
+Method_1/.factorypath
+Method_2/.factorypath
+Method_1/.project
+Method_2/.project
+Method_1/.settings
+Method_2/.settings
+Method_1/.springBeans
+Method_2/.springBeans
+Method_1/.sts4-cache
+Method_2/.sts4-cache
+Method_1/bin/
+Method_2/bin/
+!Method_1/**/src/main/**/bin/
+!Method_2/**/src/main/**/bin/
+!Method_1/**/src/test/**/bin/
+!Method_2/**/src/test/**/bin/
 
 ### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
+Method_1/nbproject/private/
+Method_2/nbproject/private/
+Method_1/nbbuild/
+Method_2/nbbuild/
+Method_1/dist/
+Method_2/dist/
+Method_1/nbdist/
+Method_2/nbdist/
+Method_1/.nb-gradle/
+Method_2/.nb-gradle/
 
 ### VS Code ###
-.vscode/
+Method_1/.vscode/
+Method_2/.vscode/
 
 ### Mac OS ###
 .DS_Store
